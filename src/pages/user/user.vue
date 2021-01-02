@@ -61,7 +61,7 @@
 	import {
 		univerifyLogin
 	} from '@/common/univerify.js'
-
+	import axios from "axios";
 	export default {
 		data() {
 			return {
@@ -100,48 +100,82 @@
 					return
 				}
 				this.logoutBtnLoading = true
-				uniCloud.callFunction({
-					name: 'user-center',
-					data: {
-						action: 'logout'
-					},
-					success: (e) => {
-
-						console.log('logout success', e);
-
-						if (e.result.code == 0) {
-							this.logout();
-							uni.removeStorageSync('uni_id_token')
-							uni.removeStorageSync('username')
-							uni.removeStorageSync('uni_id_has_pwd')
-							/**
-							 * 如果需要强制登录跳转回登录页面
-							 */
-							this.inviteUrl = ''
-							if (this.forcedLogin) {
-								uni.reLaunch({
-									url: '../login/login',
-								});
-							}
-						} else {
-							uni.showModal({
-								content: e.result.msg,
-								showCancel: false
-							})
-							console.log('登出失败', e);
+				axios({
+					method: "get",
+					url:"/static/userinfo.json",
+				}).then(e=>{
+					console.log('logout success', e);
+					let res = e.data
+					if (res.result.code == 0) {
+						this.logout();
+						uni.removeStorageSync('uni_id_token')
+						uni.removeStorageSync('username')
+						uni.removeStorageSync('uni_id_has_pwd')
+						/**
+						 * 如果需要强制登录跳转回登录页面
+						 */
+						this.inviteUrl = ''
+						if (this.forcedLogin) {
+							uni.reLaunch({
+								url: '../login/login',
+							});
 						}
-
-					},
-					fail: (e) => {
+					} else {
 						uni.showModal({
-							content: JSON.stringify(e),
+							content: e.result.msg,
 							showCancel: false
 						})
-					},
-					complete: () => {
-						this.logoutBtnLoading = false
+						console.log('登出失败', e);
 					}
+				}).catch(e=>{
+					uni.showModal({
+						content: JSON.stringify(e),
+						showCancel: false
+					})
 				})
+				this.loginBtnLoading = false
+				// uniCloud.callFunction({
+				// 	name: 'user-center',
+				// 	data: {
+				// 		action: 'logout'
+				// 	},
+				// 	success: (e) => {
+
+				// 		console.log('logout success', e);
+
+				// 		if (e.result.code == 0) {
+				// 			this.logout();
+				// 			uni.removeStorageSync('uni_id_token')
+				// 			uni.removeStorageSync('username')
+				// 			uni.removeStorageSync('uni_id_has_pwd')
+				// 			/**
+				// 			 * 如果需要强制登录跳转回登录页面
+				// 			 */
+				// 			this.inviteUrl = ''
+				// 			if (this.forcedLogin) {
+				// 				uni.reLaunch({
+				// 					url: '../login/login',
+				// 				});
+				// 			}
+				// 		} else {
+				// 			uni.showModal({
+				// 				content: e.result.msg,
+				// 				showCancel: false
+				// 			})
+				// 			console.log('登出失败', e);
+				// 		}
+
+				// 	},
+				// 	fail: (e) => {
+				// 		uni.showModal({
+				// 			content: JSON.stringify(e),
+				// 			showCancel: false
+				// 		})
+				// 	},
+				// 	complete: () => {
+				// 		this.logoutBtnLoading = false
+				// 	}
+				// })
 			},
 			toInvite() {
 				uni.navigateTo({

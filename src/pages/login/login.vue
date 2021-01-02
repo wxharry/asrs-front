@@ -52,7 +52,7 @@
 		univerifyLogin,
 		univerifyErrorHandler
 	} from '@/common/univerify.js'
-
+	import axios from "axios";
 	let weixinAuthService
 	export default {
 		components: {
@@ -199,41 +199,69 @@
 				};
 				let _self = this;
 				this.loginBtnLoading = true
-				uniCloud.callFunction({
-					name: 'user-center',
-					data: {
-						action: 'login',
-						params: data
-					},
-					success: (e) => {
-
-						console.log('login success', e);
-
-						if (e.result.code == 0) {
-							uni.setStorageSync('uni_id_token', e.result.token)
-							uni.setStorageSync('username', e.result.username)
-							uni.setStorageSync('login_type', 'online')
-							uni.setStorageSync('uni_id_has_pwd', true)
-							_self.toMain(_self.username);
-						} else {
-							uni.showModal({
-								content: e.result.msg,
-								showCancel: false
-							})
-							console.log('登录失败', e);
-						}
-
-					},
-					fail: (e) => {
+				axios({
+					method: "get",
+					url:"/static/userinfo.json",
+					params: data
+				}).then(e=>{
+					console.log('login success', e);
+					let res = e.data
+					if (res.result.code == 0) {
+						console.log("code is 0");
+						uni.setStorageSync('uni_id_token', res.result.username)
+						uni.setStorageSync('username', res.result.username)
+						uni.setStorageSync('login_type', 'online')
+						uni.setStorageSync('uni_id_has_pwd', true)
+						_self.toMain(_self.username);
+					} else {
 						uni.showModal({
-							content: JSON.stringify(e),
+							content: e.result.msg,
 							showCancel: false
 						})
-					},
-					complete: () => {
-						this.loginBtnLoading = false
+						console.log('登录失败', e);
 					}
+				}).catch(e=>{
+					uni.showModal({
+						content: JSON.stringify(e),
+						showCancel: false,
+					})
 				})
+				this.loginBtnLoading = false
+			// 	uniCloud.callFunction({
+			// 		name: 'user-center',
+			// 		data: {
+			// 			action: 'login',
+			// 			params: data
+			// 		},
+			// 		success: (e) => {
+
+			// 			console.log('login success', e);
+
+			// 			if (e.result.code == 0) {
+			// 				uni.setStorageSync('uni_id_token', e.result.token)
+			// 				uni.setStorageSync('username', e.result.username)
+			// 				uni.setStorageSync('login_type', 'online')
+			// 				uni.setStorageSync('uni_id_has_pwd', true)
+			// 				_self.toMain(_self.username);
+			// 			} else {
+			// 				uni.showModal({
+			// 					content: e.result.msg,
+			// 					showCancel: false
+			// 				})
+			// 				console.log('登录失败', e);
+			// 			}
+
+			// 		},
+			// 		fail: (e) => {
+			// 			uni.showModal({
+			// 				content: JSON.stringify(e),
+			// 				showCancel: false
+			// 			})
+			// 		},
+			// 		complete: () => {
+			// 			this.loginBtnLoading = false
+			// 		}
+			// 	})
 			},
 			loginBySms() {
 				if (!/^1\d{10}$/.test(this.mobile)) {
