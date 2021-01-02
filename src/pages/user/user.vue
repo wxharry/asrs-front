@@ -9,21 +9,14 @@
 				</view>
 			</view>
 			<view class="center-list">
-				<view class="center-list-item border-bottom" v-show="hasLogin && hasPwd" @click="goto">
+				<view class="center-list-item border-bottom" @click="goto">
 					<text class="list-icon">&#xe60f;</text>
-					<text class="list-text">修改密码</text>
+					<text class="list-text">个人信息</text>
 					<text class="navigat-arrow">&#xe65e;</text>
 				</view>
-				<!-- #ifdef APP-PLUS -->
-				<view v-if="hasLogin" class="center-list-item border-bottom" @click="toInvite">
+				<view class="center-list-item" @click="toInvite">
 					<text class="list-icon">&#xe65f;</text>
 					<text class="list-text">邀请好友</text>
-					<text class="navigat-arrow">&#xe65e;</text>
-				</view>
-				<!-- #endif -->
-				<view class="center-list-item">
-					<text class="list-icon">&#xe639;</text>
-					<text class="list-text">新消息通知</text>
 					<text class="navigat-arrow">&#xe65e;</text>
 				</view>
 			</view>
@@ -178,13 +171,14 @@
 				// })
 			},
 			toInvite() {
+				console.log("invite");
 				uni.navigateTo({
 					url: '/pages/invite/invite'
 				})
 			},
 			goto() {
 				uni.navigateTo({
-					url: '../pwd/update-password'
+					url: '/pages/info/info'
 				})
 			}
 		}

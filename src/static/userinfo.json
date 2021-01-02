@@ -1,8 +1,9 @@
 {
     "result":{
         "code": 0,
+        "msg":"登陆失败",
         "username":"admin",
-        "password":"123456"
+        "password":"admin"
     }
 
 }

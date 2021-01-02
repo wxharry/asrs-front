@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="invite-wrapper" v-if="inviteUrl">
+		<view class="invite-wrapper">
 			<uni-qrcode class="invite-qrcode" ref="qrcode" cid="invite-qr-canvas" :text="inviteUrl" :margin="10" makeOnLoad
 			 @makeComplete="qrcodeComplete" />
 			<view class="share-btn">
@@ -34,33 +34,34 @@
 			uni.showLoading({
 				title: '加载中...'
 			})
-			uniCloud.callFunction({
-				name: 'user-center',
-				data: {
-					action: 'getInviteCode'
-				},
-				success: (res) => {
-					console.log(res);
-					if (res.result.code === 0) {
-						// 这里请修改为真实的邀请页面url
-						this.inviteUrl = 'https://login.tpl.dcloud.net.cn/#/pages/invite-reg/invite-reg?invite_code=' + res.result.myInviteCode
-					} else {
-						uni.showModal({
-							content: '获取用户邀请码失败:' + res.result.msg,
-							showCancel: false
-						})
-					}
-				},
-				fail: (err) => {
-					uni.showModal({
-						content: '获取用户邀请码失败，请稍后再试',
-						showCancel: false
-					})
-				},
-				complete() {
+			// uniCloud.callFunction({
+			// 	name: 'user-center',
+			// 	data: {
+			// 		action: 'getInviteCode'
+			// 	},
+			// 	success: (res) => {
+			// 		console.log(res);
+			// 		if (res.result.code === 0) {
+			// 			// 这里请修改为真实的邀请页面url
+			// 			this.inviteUrl = 'https://login.tpl.dcloud.net.cn/#/pages/invite-reg/invite-reg?invite_code=' + res.result.myInviteCode
+			// 		} else {
+			// 			uni.showModal({
+			// 				content: '获取用户邀请码失败:' + res.result.msg,
+			// 				showCancel: false
+			// 			})
+			// 		}
+			// 	},
+			// 	fail: (err) => {
+			// 		uni.showModal({
+			// 			content: '获取用户邀请码失败，请稍后再试',
+			// 			showCancel: false
+			// 		})
+			// 	},
+			// 	complete() {
+			// 		uni.hideLoading()
+			// 	}
+			// })
 					uni.hideLoading()
-				}
-			})
 		},
 		methods: {
 			copyInviteUrl() {

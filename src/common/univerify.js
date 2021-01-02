@@ -19,51 +19,51 @@ export function univerifyLogin() {
 						success: (res) => {
 							uni.closeAuthView();
 							uni.showLoading();
+							// TODO: 一键登录
+							// uniCloud.callFunction({
+							// 	name: 'user-center',
+							// 	data: {
+							// 		action: 'loginByUniverify',
+							// 		params: res.authResult
+							// 	},
+							// 	success: (e) => {
+							// 		console.log('login success', e);
 
-							uniCloud.callFunction({
-								name: 'user-center',
-								data: {
-									action: 'loginByUniverify',
-									params: res.authResult
-								},
-								success: (e) => {
-									console.log('login success', e);
+							// 		if (e.result.code == 0) {
+							// 			const username = e.result.username || e.result.mobile || '一键登录新用户'
 
-									if (e.result.code == 0) {
-										const username = e.result.username || e.result.mobile || '一键登录新用户'
+							// 			uni.setStorageSync('uni_id_token', e.result.token)
+							// 			uni.setStorageSync('username', username)
+							// 			uni.setStorageSync('login_type', 'online')
 
-										uni.setStorageSync('uni_id_token', e.result.token)
-										uni.setStorageSync('username', username)
-										uni.setStorageSync('login_type', 'online')
+							// 			commit('login', username)
+							// 			resolve();
 
-										commit('login', username)
-										resolve();
+							// 			uni.switchTab({
+							// 				url: '../main/main',
+							// 			});
+							// 		} else {
+							// 			uni.showModal({
+							// 				title: `登录失败: ${e.result.code}`,
+							// 				content: e.result.message,
+							// 				showCancel: false
+							// 			})
+							// 			console.log('登录失败', e);
 
-										uni.switchTab({
-											url: '../main/main',
-										});
-									} else {
-										uni.showModal({
-											title: `登录失败: ${e.result.code}`,
-											content: e.result.message,
-											showCancel: false
-										})
-										console.log('登录失败', e);
-
-										e.result.errMsg = e.result.message;
-									}
-								},
-								fail: (e) => {
-									uni.showModal({
-										title: `登录失败`,
-										content: e.errMsg,
-										showCancel: false
-									})
-								},
-								complete: () => {
-									uni.hideLoading()
-								}
-							})
+							// 			e.result.errMsg = e.result.message;
+							// 		}
+							// 	},
+							// 	fail: (e) => {
+							// 		uni.showModal({
+							// 			title: `登录失败`,
+							// 			content: e.errMsg,
+							// 			showCancel: false
+							// 		})
+							// 	},
+							// 	complete: () => {
+							// 		uni.hideLoading()
+							// 	}
+							// })
 						},
 						fail: (err) => {
 							console.error('授权登录失败：' + JSON.stringify(err));
