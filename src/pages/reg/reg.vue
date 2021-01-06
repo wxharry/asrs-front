@@ -35,9 +35,9 @@
         type="primary"
         class="primary"
         :loading="confirmBtnLoading"
-        @tap="open()"
+        @tap="open"
       >
-        点击测试
+        邀请
       </button>
     </view>
     <uni-popup ref="popup" type="dialog">
@@ -78,37 +78,43 @@ export default {
           icon: "none",
           title: "账号格式有误",
         });
-        return;
+        return false;
       }
       if (this.password.length < 6) {
         uni.showToast({
           icon: "none",
           title: "密码最短为 6 个字符",
         });
-        return;
+        return false;
       }
       if (this.email.length < 3 || !~this.email.indexOf("@")) {
         uni.showToast({
           icon: "none",
           title: "邮箱地址不合法",
         });
-        return;
+        return false;
       }
+      return true
     },
     open() {
       this.confirmBtnLoading = true;
       // 检查输入是否合法
-      this.checkIsValid();
+      let isvalid = this.checkIsValid();
+      if (!isvalid) {
+        return
+      }
       // 打开弹出框
       this.$refs.popup.open();
     },
     confirm() {
-      this.close();
+      this.$refs.popup.close();
+      this.confirmBtnLoading = true;
       this.register();
     },
     close(done) {
       // 关闭弹出框
       this.$refs.popup.close();
+      this.confirmBtnLoading = false;
     },
     register() {
       let _self = this
