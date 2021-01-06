@@ -126,80 +126,7 @@
 				 */
 				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
 			},
-			// sendSmsCode() {
-			// 	if (this.codeDuration) {
-			// 		uni.showModal({
-			// 			content: `请在${this.codeDuration}秒后重试`,
-			// 			showCancel: false
-			// 		})
-			// 	}
-			// 	if (!/^1\d{10}$/.test(this.mobile)) {
-			// 		uni.showModal({
-			// 			content: '手机号码填写错误',
-			// 			showCancel: false
-			// 		})
-			// 		return
-			// 	}
-			// 	uniCloud.callFunction({
-			// 		name: 'user-center',
-			// 		data: {
-			// 			action: 'sendSmsCode',
-			// 			params: {
-			// 				mobile: this.mobile,
-			// 				type: 'login'
-			// 			}
-			// 		},
-			// 		success: (e) => {
-			// 			if (e.result.code == 0) {
-			// 				uni.showModal({
-			// 					content: '验证码发送成功，请注意查收',
-			// 					showCancel: false
-			// 				})
-			// 				this.codeDuration = 60
-			// 				this.codeInterVal = setInterval(() => {
-			// 					this.codeDuration--
-			// 					if (this.codeDuration === 0) {
-			// 						if (this.codeInterVal) {
-			// 							clearInterval(this.codeInterVal)
-			// 							this.codeInterVal = null
-			// 						}
-			// 					}
-			// 				}, 1000)
-			// 			} else {
-			// 				uni.showModal({
-			// 					content: '验证码发送失败：' + e.result.msg,
-			// 					showCancel: false
-			// 				})
-			// 			}
-
-			// 		},
-			// 		fail(e) {
-			// 			uni.showModal({
-			// 				content: '验证码发送失败',
-			// 				showCancel: false
-			// 			})
-			// 		}
-			// 	})
-			// },
 			loginByPwd() {
-				/**
-				 * 客户端对账号信息进行一些必要的校验。
-				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
-				 */
-				// if (this.username.length < 3) {
-				// 	uni.showToast({
-				// 		icon: 'none',
-				// 		title: '账号最短为 3 个字符'
-				// 	});
-				// 	return;
-				// }
-				// if (this.password.length < 6) {
-				// 	uni.showToast({
-				// 		icon: 'none',
-				// 		title: '密码最短为 6 个字符'
-				// 	});
-				// 	return;
-				// }
 				const data = {
 					username: this.username,
 					password: this.password
@@ -211,7 +138,7 @@
 				    method:'GET',
 					data: data,
 				    success: (e) => {
-				        console.log('login success', e);
+				        // console.log('login success', e);
 						let res = e.data
 						if (res.code === 0) {
 							uni.setStorageSync('uni_id_token', res.sessionId)

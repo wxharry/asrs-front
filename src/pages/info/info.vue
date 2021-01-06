@@ -7,26 +7,26 @@
           username
         }}</view>
       </view>
-      <view class="uni-flex uni-row">
+      <!-- <view class="uni-flex uni-row">
         <view class="text" style="width: 150rpx">密码</view>
-        <view class="text" style="-webkit-flex: 1; flex: 1">{{
-          password
+        <view class="text" style="-webkit-flex: 1; flex: 1" @longpress="changeSeen">{{
+          seen? password:""
         }}</view>
-      </view>
+      </view> -->
       <view class="uni-flex uni-row">
         <view class="text" style="width: 150rpx">邮箱</view>
         <view class="text" style="-webkit-flex: 1; flex: 1">{{ email }}</view>
       </view>
     </view>
     <view class="btn-row">
-      <button type="primary" class="primary" @tap="updateInfo">修改信息</button>
+      <button type="primary" class="primary" @tap="gotoUpdateInfo">修改信息</button>
     </view>
   </view>
 </template>
 
 <script>
 import mInput from "../../components/m-input.vue";
-
+import baseURL from "@/common/config.js"
 export default {
   components: {
     mInput,
@@ -34,11 +34,37 @@ export default {
   data() {
     return {
       username: "",
-      password: "",
+      password: "123465",
       email: "",
+      seen: false,
     };
   },
+  onLoad() {
+    uni.request({
+      method: "GET",
+      url: baseURL + "/getUserInfo/",
+      success: (e) => {
+        // console.log("successfully get userinfo", e);
+        let res = e.data;
+        if (res.code === 0) {
+          // console.log(res);
+          this.username = res.username;
+          this.email = res.email
+        } else {
+          uni.showModal({
+            content: res.msg,
+            showCancel: false,
+          });
+        }
+      },
+      fail: (e) => {},
+    });
+  },
   methods: {
+    changeSeen() {
+      console.log("seen", this.seen);
+      this.seen = !this.seen;
+    },
     findPassword() {
       /**
        * 仅做示例
@@ -56,11 +82,11 @@ export default {
         duration: 3000,
       });
     },
-    updateInfo() {
+    gotoUpdateInfo() {
       uni.navigateTo({
         url: "/pages/info/update-info",
       });
-    }
+    },
   },
 };
 </script>
