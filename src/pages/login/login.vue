@@ -25,10 +25,6 @@
 				<text class="title">密码：</text>
 				<m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
 			</view>
-			<view class="input-row">
-				<text class="title">邀请码：</text>
-				<m-input type="text" v-model="inviteCode" placeholder="请输入邀请码"></m-input>
-			</view>
 		</view>
 		<view class="btn-row">
 			<button type="primary" class="primary" :loading="loginBtnLoading" @tap="bindLogin">登录</button>
