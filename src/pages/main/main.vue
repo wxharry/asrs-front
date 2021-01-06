@@ -103,8 +103,34 @@ export default {
       });
     },
     switch1Change: function (e) {
-		this.open = e.detail.value
-      console.log("switch1 发生 change 事件，携带值为", e.detail.value);
+      this.open = e.detail.value
+      let token = uni.getStorageSync('uni_id_token')
+      console.log("token", token);
+      // console.log("switch1 发生 change 事件，携带值为", e.detail.value);
+      uni.request({
+        method:"GET",
+        // #ifdef MP-WEIXIN
+        header: {'Cookie': 'sessionid='+token},
+        // #endif
+        url: baseURL+"/isAutoReport/",
+        data:{
+          is_auto_flag: this.open ? 1 : 0
+        },
+        success: (e) => {
+          console.log("success", e);
+          if (e.data.code === -5) {
+            if (this.forcedLogin) {
+              uni.reLaunch({
+                url: "../login/login",
+              });
+            } else {
+              uni.navigateTo({
+                url: "../login/login",
+              });
+            }
+          }
+        }
+      })
     },
   },
 };
