@@ -138,53 +138,11 @@ export default {
         },
       });
       this.loginBtnLoading = false;
-      // uniCloud.callFunction({
-      // 	name: 'user-center',
-      // 	data: {
-      // 		action: 'logout'
-      // 	},
-      // 	success: (e) => {
-
-      // 		console.log('logout success', e);
-
-      // 		if (e.result.code == 0) {
-      // 			this.logout();
-      // 			uni.removeStorageSync('uni_id_token')
-      // 			uni.removeStorageSync('username')
-      // 			uni.removeStorageSync('uni_id_has_pwd')
-      // 			/**
-      // 			 * 如果需要强制登录跳转回登录页面
-      // 			 */
-      // 			this.inviteUrl = ''
-      // 			if (this.forcedLogin) {
-      // 				uni.reLaunch({
-      // 					url: '../login/login',
-      // 				});
-      // 			}
-      // 		} else {
-      // 			uni.showModal({
-      // 				content: e.result.msg,
-      // 				showCancel: false
-      // 			})
-      // 			console.log('登出失败', e);
-      // 		}
-
-      // 	},
-      // 	fail: (e) => {
-      // 		uni.showModal({
-      // 			content: JSON.stringify(e),
-      // 			showCancel: false
-      // 		})
-      // 	},
-      // 	complete: () => {
-      // 		this.logoutBtnLoading = false
-      // 	}
-      // })
     },
     toInvite() {
-      console.log("invite");
+      // console.log("invite");
       uni.navigateTo({
-        url: "/pages/invite/invite",
+        url: "/pages/reg/reg",
       });
     },
     goto() {
