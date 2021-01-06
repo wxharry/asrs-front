@@ -53,7 +53,6 @@
 		univerifyLogin,
 		univerifyErrorHandler
 	} from '@/common/univerify.js'
-	import baseURL from "@/common/config.js"
 	let weixinAuthService
 	export default {
 		components: {
@@ -129,8 +128,8 @@
 				};
 				let _self = this;
 				this.loginBtnLoading = true
-				uni.request({
-				    url: baseURL+'/login/',
+				this.$request({
+				    url: '/login/',
 				    method:'GET',
 					data: data,
 				    success: (e) => {

@@ -63,7 +63,6 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import { univerifyLogin } from "@/common/univerify.js";
-import baseURL from "@/common/config.js"
 export default {
   data() {
     return {
@@ -102,9 +101,9 @@ export default {
         return;
       }
       this.logoutBtnLoading = true;
-      uni.request({
+      this.$request({
         method: "GET",
-        url: baseURL+"/logout/",
+        url: "/logout/",
         success: (e) => {
           console.log("logout success", e);
           let res = e.data;

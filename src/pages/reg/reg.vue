@@ -56,7 +56,6 @@
 <script>
 import mInput from "../../components/m-input.vue";
 import { uniPopupDialog } from "@dcloudio/uni-ui";
-import baseURL from "@/common/config.js";
 export default {
   components: {
     mInput,
@@ -97,7 +96,6 @@ export default {
       return true
     },
     open() {
-      this.confirmBtnLoading = true;
       // 检查输入是否合法
       let isvalid = this.checkIsValid();
       if (!isvalid) {
@@ -118,9 +116,9 @@ export default {
     },
     register() {
       let _self = this
-      uni.request({
+      this.$request({
         method: "GET",
-        url: baseURL + "/register/",
+        url: "/register/",
         data: {
           username: this.username,
           password: this.password,

@@ -41,9 +41,9 @@ export default {
   },
   // TODO: 实时更新，在更新信息页返回应能看到新信息
   onLoad() {
-    uni.request({
+    this.$request({
       method: "GET",
-      url: baseURL + "/getUserInfo/",
+      url: "/getUserInfo/",
       success: (e) => {
         // console.log("successfully get userinfo", e);
         let res = e.data;
