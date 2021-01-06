@@ -2,7 +2,7 @@
   <view class="content">
     <view v-if="hasLogin" class="hello">
       <view class="uni-list-cell uni-list-cell-pd">
-        <view class="uni-list-cell-db" style="color: #8f8f94">{{this.open === true?"开启中":"已关闭"}}</view>
+        <view class="uni-list-cell-db" style="color: #8f8f94">{{open?"开启中":"已关闭"}}</view>
         <switch
           checked
           color="#FFCC33"
@@ -21,6 +21,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import { univerifyLogin } from "@/common/univerify.js";
+import baseURL from "@/common/config.js"
 
 export default {
   computed: mapState(["forcedLogin", "hasLogin", "userName"]),
@@ -38,34 +39,34 @@ export default {
     let uniIdToken = uni.getStorageSync("uni_id_token");
     if (uniIdToken) {
       this.login(uni.getStorageSync("username"));
-      uniCloud.callFunction({
-        name: "user-center",
-        data: {
-          action: "checkToken",
-        },
-        success: (e) => {
-          console.log("checkToken success", e);
+      // uniCloud.callFunction({
+      //   name: "user-center",
+      //   data: {
+      //     action: "checkToken",
+      //   },
+      //   success: (e) => {
+      //     console.log("checkToken success", e);
 
-          if (e.result.code > 0) {
-            //token过期或token不合法，重新登录
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
-          }
-        },
-        fail(e) {
-          uni.showModal({
-            content: JSON.stringify(e),
-            showCancel: false,
-          });
-        },
-      });
+      //     if (e.result.code > 0) {
+      //       //token过期或token不合法，重新登录
+      //       if (this.forcedLogin) {
+      //         uni.reLaunch({
+      //           url: "../login/login",
+      //         });
+      //       } else {
+      //         uni.navigateTo({
+      //           url: "../login/login",
+      //         });
+      //       }
+      //     }
+      //   },
+      //   fail(e) {
+      //     uni.showModal({
+      //       content: JSON.stringify(e),
+      //       showCancel: false,
+      //     });
+      //   },
+      // });
     } else {
       this.guideToLogin();
     }

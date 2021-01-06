@@ -57,7 +57,7 @@
 		univerifyLogin,
 		univerifyErrorHandler
 	} from '@/common/univerify.js'
-	import axios from "axios";
+	import baseURL from "@/common/config.js"
 	let weixinAuthService
 	export default {
 		components: {

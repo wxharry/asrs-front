@@ -61,6 +61,20 @@
     "h5" : {
         "router" : {
             "base" : ""
+        },
+        "devServer": {
+            "port": 8000,
+            "disableHostCheck": true,
+            "proxy": {
+                "/api": {
+                    "target": "https://www.liaoluoxing.cn:444",
+                    "changeOrigin": true,
+                    "secure": false,
+                    "pathRewrite":{
+                        "^/api":""
+                    }
+                }
+            }
         }
     }
 }
