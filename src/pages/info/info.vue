@@ -39,8 +39,7 @@ export default {
       seen: false,
     };
   },
-  // TODO: 实时更新，在更新信息页返回应能看到新信息
-  onLoad() {
+  onShow() {
     this.$request({
       method: "GET",
       url: "/getUserInfo/",
