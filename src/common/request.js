@@ -13,4 +13,21 @@ const request = (options) => {
         complete: options.complete
     })
 }
+const requestErrorHandler = (code) => {
+    switch (code) {
+        case -5:
+            if (this.forcedLogin) {
+                uni.reLaunch({
+                    url: "../login/login",
+                });
+            } else {
+                uni.navigateTo({
+                    url: "../login/login",
+                });
+            }
+            break;
+        default:
+            break;
+    }
+}
 export default request

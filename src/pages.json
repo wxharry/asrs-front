@@ -28,10 +28,19 @@
 		},{
 			"path": "pages/info/update-info",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "个人信息"
 			}
-		}
-		, {
+		},{
+			"path": "pages/info/update-email",
+			"style": {
+				"navigationBarTitleText": "修改邮箱"
+			}
+		},{
+			"path": "pages/info/update-password",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		}, {
 			"path": "pages/invite/invite",
 			"style": {
 				"navigationBarTitleText": "邀请好友"
