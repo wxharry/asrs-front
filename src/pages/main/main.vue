@@ -2,9 +2,11 @@
   <view class="content">
     <view v-if="hasLogin" class="hello">
       <view class="uni-list-cell uni-list-cell-pd">
-        <view class="uni-list-cell-db" style="color: #8f8f94">{{open?"开启中":"已关闭"}}</view>
+        <view class="uni-list-cell-db" style="color: #8f8f94">{{
+          open ? "开启中" : "已关闭"
+        }}</view>
         <switch
-          checked
+          :checked="open"
           color="#FFCC33"
           style="transform: scale(0.7)"
           @change="switch1Change"
@@ -21,14 +23,14 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import { univerifyLogin } from "@/common/univerify.js";
-import baseURL from "@/common/config.js"
+import baseURL from "@/common/config.js";
 
 export default {
   computed: mapState(["forcedLogin", "hasLogin", "userName"]),
   data() {
     return {
-		open: true
-	};
+      open: true,
+    };
   },
   onLoad() {
     const loginType = uni.getStorageSync("login_type");
@@ -39,6 +41,18 @@ export default {
     let uniIdToken = uni.getStorageSync("uni_id_token");
     if (uniIdToken) {
       this.login(uni.getStorageSync("username"));
+      this.$request({
+        method: "GET",
+        url: "/getModel/",
+        success: (e) => {
+          console.log("success", e);
+          var res = e.data
+          if (res.code === 0) {
+              console.log(res);
+              this.open = res.is_auto_flag
+          }
+        },
+      });
       // uniCloud.callFunction({
       //   name: "user-center",
       //   data: {
@@ -103,15 +117,15 @@ export default {
       });
     },
     switch1Change: function (e) {
-      this.open = e.detail.value
-      let token = uni.getStorageSync('uni_id_token')
+      this.open = e.detail.value;
+      let token = uni.getStorageSync("uni_id_token");
       console.log("token", token);
       // console.log("switch1 发生 change 事件，携带值为", e.detail.value);
       this.$request({
-        method:"GET",
+        method: "GET",
         url: "/isAutoReport/",
-        data:{
-          is_auto_flag: this.open ? 1 : 0
+        data: {
+          is_auto_flag: this.open ? 1 : 0,
         },
         success: (e) => {
           console.log("success", e);
@@ -126,8 +140,8 @@ export default {
               });
             }
           }
-        }
-      })
+        },
+      });
     },
   },
 };
