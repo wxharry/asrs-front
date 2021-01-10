@@ -15,6 +15,20 @@
       <view class="title"> 您好 {{ userName }}，您已成功登录。 </view>
       <view class="ul">
         <view>这是首页，作为填报模板展示区域</view>
+
+
+        <view v-for="(item, i) in modelList" :key="item.id">
+          <view :id="item.id" :hidden="item.hidden">
+            <label>{{ item.title === undefined ? "" : item.title }}</label>
+            <component
+              v-model="item.val"
+              :is="item.newType"
+              v-bind="item.prop"
+              @change="item.change"
+            ></component>
+          </view>
+        </view>
+        <button @tap="submit">提交</button>
       </view>
     </view>
   </view>
@@ -23,13 +37,26 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import { univerifyLogin } from "@/common/univerify.js";
-import baseURL from "@/common/config.js";
-
+import { UniDataCheckbox, UniNoticeBar } from "@dcloudio/uni-ui";
+import { convertModel } from "@/common/modelProcess.js";
+import MInput from "../../components/m-input.vue";
+import biaofunDatetimePicker from "@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue";
+import biaofunRegion from "@/components/biaofun-region/biaofun-region.vue";
 export default {
   computed: mapState(["forcedLogin", "hasLogin", "userName"]),
+  components: {
+    UniDataCheckbox,
+    UniNoticeBar,
+    MInput,
+    biaofunDatetimePicker,
+    biaofunRegion,
+  },
   data() {
     return {
       open: true,
+      value: "",
+      bushi: "123",
+      modelList: [],
     };
   },
   onLoad() {
@@ -46,10 +73,23 @@ export default {
         url: "/getModel/",
         success: (e) => {
           console.log("success", e);
-          var res = e.data
+          var res = e.data;
           if (res.code === 0) {
-              console.log(res);
-              this.open = res.is_auto_flag
+            console.log(res);
+            this.open = res.is_auto_flag;
+            this.modelList = convertModel(res.model);
+            console.log("ml", this.modelList);
+          } else if (res.code === -5) {
+            //token过期或token不合法，重新登录
+            if (this.forcedLogin) {
+              uni.reLaunch({
+                url: "../login/login",
+              });
+            } else {
+              uni.navigateTo({
+                url: "../login/login",
+              });
+            }
           }
         },
       });
@@ -61,19 +101,19 @@ export default {
       //   success: (e) => {
       //     console.log("checkToken success", e);
 
-      //     if (e.result.code > 0) {
-      //       //token过期或token不合法，重新登录
-      //       if (this.forcedLogin) {
-      //         uni.reLaunch({
-      //           url: "../login/login",
-      //         });
-      //       } else {
-      //         uni.navigateTo({
-      //           url: "../login/login",
-      //         });
-      //       }
+      //   if (e.result.code > 0) {
+      //     //token过期或token不合法，重新登录
+      //     if (this.forcedLogin) {
+      //       uni.reLaunch({
+      //         url: "../login/login",
+      //       });
+      //     } else {
+      //       uni.navigateTo({
+      //         url: "../login/login",
+      //       });
       //     }
-      //   },
+      //   }
+      // },
       //   fail(e) {
       //     uni.showModal({
       //       content: JSON.stringify(e),
@@ -87,6 +127,47 @@ export default {
   },
   methods: {
     ...mapMutations(["login"]),
+    submit() {
+      console.log("submit", this.modelList);
+      var model = []
+      for (let i = 0; i < this.modelList.length; i++) {
+        model.push({
+          "id":this.modelList[i].id,
+          "name": this.modelList[i].name,
+          "type": this.modelList[i].type,
+          "val": this.modelList[i].val
+        })
+      }
+      this.$request({
+        url: "/setPersonalModel/",
+        methods: "GET",
+        data: {"model":JSON.stringify(model)},
+        success: (e) => {
+          console.log("success", e);
+          var res = e.data;
+          if (res.code === 0) {
+            console.log(res);
+          } else if (res.code === -5) {
+            //token过期或token不合法，重新登录
+            if (this.forcedLogin) {
+              uni.reLaunch({
+                url: "../login/login",
+              });
+            } else {
+              uni.navigateTo({
+                url: "../login/login",
+              });
+            }
+          }
+        },
+      });
+    },
+    changeDatetimePicker(e) {
+      console.log("e", e);
+    },
+    change() {
+      console.log("change");
+    },
     guideToLogin() {
       uni.showModal({
         title: "未登录",

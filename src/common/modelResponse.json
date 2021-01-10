@@ -1,0 +1,192 @@
+{
+    "code": 0,
+    "msg": "success",
+    "model": [
+        {
+            "id": 1,
+            "type": "panel",
+            "content": "{'id': 'p1', 'name': 'p1'}"
+        },
+        {
+            "id": 2,
+            "type": "checkbox",
+            "content": "{'id': 'p1_ChengNuo', 'checked': 'false', 'name': 'p1$ChengNuo', 'inputLabel': '我承诺，以下报送内容真实有效并可用于学校管理需要！'}"
+        },
+        {
+            "id": 3,
+            "type": "label",
+            "content": "{'id': 'p1_lbmessage2', 'value': '友情提示：根据上海市教委关于秋季学期开学返校工作有关安排要求，请大家一定要准确及时填报每日健康信息！谢谢！', 'name': 'p1$lbmessage2'}"
+        },
+        {
+            "id": 4,
+            "type": "datepicker",
+            "content": "{'id': 'p1_BaoSRQ', 'fieldLabel': '报送日期', 'name': 'p1$BaoSRQ', 'Text': '2021-01-10'}"
+        },
+        {
+            "id": 5,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_DangQSTZK', 'fieldLabel': '当前身体状况', 'name': 'p1$DangQSTZK', 'F_Items': [['良好', '良好', 1], ['不适', '不适', 1]], 'SelectedValue': '良好', 'hiddenChildren': ['p1_ZhengZhuang']}"
+        },
+        {
+            "id": 6,
+            "type": "checkboxlist",
+            "content": "{'id': 'p1_ZhengZhuang', 'fieldLabel': '症状', 'hidden': 'true', 'name': 'p1$ZhengZhuang', 'F_Items': [['感冒', '感冒', 1], ['咳嗽', '咳嗽', 1], ['发热', '发热', 1]], 'SelectedValueArray': []}"
+        },
+        {
+            "id": 7,
+            "type": "numberbox",
+            "content": "{'id': 'p1_TiWen', 'fieldLabel': '体温', 'name': 'p1$TiWen', 'Text': '37.1'}"
+        },
+        {
+            "id": 8,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_ZaiXiao', 'fieldLabel': '当天是否在校', 'name': 'p1$ZaiXiao', 'F_Items': [['不在校', '不在校', 1], ['宝山', '宝山校区', 1], ['延长', '延长校区', 1], ['嘉定', '嘉定校区', 1], ['新闸路', '新闸路校区', 1]], 'SelectedValue': '宝山'}"
+        },
+        {
+            "id": 9,
+            "type": "dropdownlist",
+            "content": "{'id': 'p1_ddlSheng', 'fieldLabel': '当天所在省', 'name': 'p1$ddlSheng'}"
+        },
+        {
+            "id": 10,
+            "type": "dropdownlist",
+            "content": "{'id': 'p1_ddlShi', 'fieldLabel': '当天所在市', 'name': 'p1$ddlShi'}"
+        },
+        {
+            "id": 11,
+            "type": "dropdownlist",
+            "content": "{'id': 'p1_ddlXian', 'fieldLabel': '当天所在县区', 'name': 'p1$ddlXian'}"
+        },
+        {
+            "id": 12,
+            "type": "textbox",
+            "content": "{'id': 'p1_XiangXDZ', 'fieldLabel': '具体地址', 'name': 'p1$XiangXDZ', 'Text': '新世纪大学村'}"
+        },
+        {
+            "id": 13,
+            "type": "label",
+            "content": "{'id': 'p1_ZhongGFXDQ', 'value': '中高风险地区包括：北京：朝阳区酒仙桥街道汉庭酒店大山子店（包括底商），顺义区仁和（地区）镇河南村，顺义区南彩镇南彩村，顺义区高丽营镇东马各庄村,顺义区高丽营镇张喜庄村，顺义区南法信镇（东海洪村、西杜兰村）;河北:石家庄市藁城区全域，石家庄新乐市（天悦花苑、计生宿舍、瑞达玫瑰园小区、坚固村、芦新村），石家庄市新华区（都市阳光小区、丽都河畔小区），石家庄市桥西区平安小区，石家庄市行唐县滨河小区，邢台市南宫市（天地名城小区、天一合院小区、凤岗街道办事处、鸿兴小区、文景名苑小区、在水一方、凤岗街道办事处十里铺居委会、大高村镇石家庄村）；辽宁:沈阳市皇姑区化工小区，沈阳市皇姑区基业百花园小区，沈阳市皇姑区昆山西路向工小区东区，沈阳市皇姑区昆山西路中海寰宇天下天悦园区，皇姑区长江南街197—1号楼，沈阳市皇姑区明廉街道（亿海阳光二期、华锐塔湾欣城2期、明廉小区），沈阳市皇姑区明廉路博客地带小区，沈阳市皇姑区舍利塔街道世纪学府，沈阳市皇姑区溪水街1号楼，沈阳市皇姑区亿海阳光一期，沈阳市皇姑区华山街道鲲鹏小区2期，沈阳市铁西区北二东路沈铁兴工佳园小区，沈阳市于洪区北陵街道宏达社区，沈阳市于洪区华润橡树湾二期，沈阳市于洪区中海城星座小区，大连市沙河口区星海湾街道星海公园社区，大连市甘井子区凌水街道大有恬园社区，大连市金普新区光中街道（红旗社区、金东路社区、胜利东社区、胜利西社区），大连市金普新区先进街道（金润小区B区、民馨社区），大连市金普新区拥政街道古城甲区，大连市金普新区友谊街道（古城乙区社区、金海社区、金华社区、康乐社区、道兴民村），大连市金普新区站前街道（联胜社区、盛滨社区）；黑龙江：黑河市爱辉区金兰社区电业名苑小区，黑河市爱辉区金融社区省建材楼小区，黑河市爱辉区喇嘛台社区学府佳苑小区，黑河市爱辉区热电社区（天丝小区、新生活家园小区、兴边集资楼（2号楼）），黑河市爱辉区人保财险社区水岸华府小区10A楼', 'name': 'p1$ZhongGFXDQ'}"
+        },
+        {
+            "id": 14,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_FengXDQDL', 'fieldLabel': '12月27日至01月10日是否在中高风险地区逗留', 'name': 'p1$FengXDQDL', 'F_Items': [['是', '是', 1], ['否', '否', 1]], 'SelectedValue': '否'}"
+        },
+        {
+            "id": 15,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_TongZWDLH', 'fieldLabel': '上海同住人员是否有12月27日至01月10日来自中高风险地区的人', 'name': 'p1$TongZWDLH', 'F_Items': [['是', '是', 1], ['否', '否', 1]], 'SelectedValue': '否'}"
+        },
+        {
+            "id": 16,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_CengFWH', 'fieldLabel': '12月27日至01月10日是否在中高风险地区逗留过', 'hidden': 'true', 'name': 'p1$CengFWH', 'F_Items': [['是', '是', 1], ['否', '否', 1]], 'SelectedValue': '否'}"
+        },
+        {
+            "id": 17,
+            "type": "datepicker",
+            "content": "{'id': 'p1_CengFWH_RiQi', 'fieldLabel': '赴中高风险地区日期', 'hidden': 'true', 'name': 'p1$CengFWH_RiQi'}"
+        },
+        {
+            "id": 18,
+            "type": "textarea",
+            "content": "{'id': 'p1_CengFWH_BeiZhu', 'fieldLabel': '赴中高风险地区详细情况', 'hidden': 'true', 'name': 'p1$CengFWH_BeiZhu'}"
+        },
+        {
+            "id": 19,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_JieChu', 'fieldLabel': '12月27日至01月10日是否与来自中高风险地区发热人员密切接触', 'name': 'p1$JieChu', 'F_Items': [['是', '是', 1], ['否', '否', 1]], 'SelectedValue': '否', 'hiddenChildren': ['p1_JieChu_RiQi', 'p1_JieChu_BeiZhu']}"
+        },
+        {
+            "id": 20,
+            "type": "datepicker",
+            "content": "{'id': 'p1_JieChu_RiQi', 'fieldLabel': '接触日期', 'hidden': 'true', 'name': 'p1$JieChu_RiQi'}"
+        },
+        {
+            "id": 21,
+            "type": "textarea",
+            "content": "{'id': 'p1_JieChu_BeiZhu', 'fieldLabel': '接触详细情况', 'hidden': 'true', 'name': 'p1$JieChu_BeiZhu'}"
+        },
+        {
+            "id": 22,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_TuJWH', 'fieldLabel': '12月27日至01月10日是否乘坐公共交通途径中高风险地区', 'name': 'p1$TuJWH', 'F_Items': [['是', '是', 1], ['否', '否', 1]], 'SelectedValue': '否', 'hiddenChildren': ['p1_TuJWH_RiQi', 'p1_TuJWH_BeiZhu']}"
+        },
+        {
+            "id": 23,
+            "type": "datepicker",
+            "content": "{'id': 'p1_TuJWH_RiQi', 'fieldLabel': '途径日期', 'hidden': 'true', 'name': 'p1$TuJWH_RiQi'}"
+        },
+        {
+            "id": 24,
+            "type": "textarea",
+            "content": "{'id': 'p1_TuJWH_BeiZhu', 'fieldLabel': '途径中高风险地区详细情况', 'hidden': 'true', 'name': 'p1$TuJWH_BeiZhu'}"
+        },
+        {
+            "id": 25,
+            "type": "dropdownlist",
+            "content": "{'id': 'p1_QueZHZJC', 'fieldLabel': '是否曾与确诊患者有密切接触', 'name': 'p1$QueZHZJC', 'F_Items': [['是', '是', 1, '', ''], ['否', '否', 1, '', '']], 'SelectedValueArray': ['否']}"
+        },
+        {
+            "id": 26,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_DangRGL', 'fieldLabel': '当天是否隔离', 'name': 'p1$DangRGL', 'F_Items': [['是', '是', 1], ['否', '否', 1]], 'SelectedValue': '否', 'hiddenChildren': ['p1_GeLSM', 'p1_GeLFS', 'p1_GeLDZ']}"
+        },
+        {
+            "id": 27,
+            "type": "panel",
+            "content": "{'id': 'p1_GeLSM', 'hidden': 'true', 'name': 'p1$GeLSM'}"
+        },
+        {
+            "id": 28,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_GeLFS', 'fieldLabel': '隔离方式', 'hidden': 'true', 'name': 'p1$GeLFS', 'F_Items': [['居家隔离', '居家隔离', 1], ['集中隔离', '集中隔离', 1]]}"
+        },
+        {
+            "id": 29,
+            "type": "textbox",
+            "content": "{'id': 'p1_GeLDZ', 'fieldLabel': '隔离具体地址', 'hidden': 'true', 'name': 'p1$GeLDZ'}"
+        },
+        {
+            "id": 30,
+            "type": "checkbox",
+            "content": "{'id': 'p1_JiaRen', 'fieldLabel': '12月27日至01月10日家人是否有发热等症状', 'checked': 'false', 'displayType': 'switch', 'name': 'p1$JiaRen', 'hiddenChildren': ['p1_JiaRen_BeiZhu']}"
+        },
+        {
+            "id": 31,
+            "type": "textarea",
+            "content": "{'id': 'p1_JiaRen_BeiZhu', 'fieldLabel': '详细情况', 'hidden': 'true', 'name': 'p1$JiaRen_BeiZhu'}"
+        },
+        {
+            "id": 32,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_SuiSM', 'fieldLabel': '当天健康码颜色', 'name': 'p1$SuiSM', 'F_Items': [['红色', '红色', 1], ['黄色', '黄色', 1], ['绿色', '绿色', 1]], 'SelectedValue': '绿色'}"
+        },
+        {
+            "id": 33,
+            "type": "radiobuttonlist",
+            "content": "{'id': 'p1_LvMa14Days', 'fieldLabel': '截止今天是否连续14天健康码为绿色', 'name': 'p1$LvMa14Days', 'F_Items': [['是', '是', 1], ['否', '否', 1]], 'SelectedValue': '是'}"
+        },
+        {
+            "id": 34,
+            "type": "textbox",
+            "content": "{'id': 'p1_Address2', 'fieldLabel': '测试', 'hidden': 'true', 'name': 'p1$Address2'}"
+        },
+        {
+            "id": 35,
+            "type": "toolbar",
+            "content": "{'id': 'p1_ctl00', 'name': 'p1$ctl00'}"
+        },
+        {
+            "id": 36,
+            "type": "button",
+            "content": "{'id': 'p1_ctl00_btnSubmit', 'text': '提交', 'name': 'p1$ctl00$btnSubmit'}"
+        },
+        {
+            "id": 37,
+            "type": "button",
+            "content": "{'id': 'p1_ctl00_btnReturn', 'text': '返回', 'name': 'p1$ctl00$btnReturn'}"
+        }
+    ],
+    "is_auto_flag": true
+}
