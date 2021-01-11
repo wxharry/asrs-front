@@ -1,66 +1,68 @@
 <template>
-  <view class="content">
-    <view class="input-group">
-      <view class="uni-list-cell uni-list-cell-pd">
-        <view class="uni-list-cell-db" style="color: #8f8f94">自动填报</view>
-        <switch
-          :checked="auto"
-          color="#FFCC33"
-          style="transform: scale(0.7)"
-          @change="switchChangeAuto"
-        />
+  <view class="">
+    <view class="center">
+      <view class="center-list">
+        <view class="uni-list-cell uni-list-cell-pd">
+          <view class="uni-list-cell-db" style="color: #8f8f94">自动填报</view>
+          <switch
+            :checked="auto"
+            color="#FFCC33"
+            style="transform: scale(0.7)"
+            @change="switchChangeAuto"
+          />
+        </view>
+
+        <view class="uni-list-cell uni-list-cell-pd">
+          <view class="uni-list-cell-db" style="color: #8f8f94"
+            >允许使用默认模板</view
+          >
+          <switch
+            :checked="defaultModel"
+            color="#FFCC33"
+            style="transform: scale(0.7)"
+            @change="switchChangeDefault"
+          />
+        </view>
       </view>
 
-      <view class="uni-list-cell uni-list-cell-pd">
-        <view class="uni-list-cell-db" style="color: #8f8f94"
-          >允许使用默认模板</view
-        >
-        <switch
-          :checked="defaultModel"
-          color="#FFCC33"
-          style="transform: scale(0.7)"
-          @change="switchChangeDefault"
-        />
+      <view class="center-list">
+        <view class="uni-list-cell uni-list-cell-pd">
+          <text class="title">当前地区</text>
+          <biaofunRegion
+            @change="changeRegin"
+            :defaultValue="region"
+          ></biaofunRegion>
+        </view>
+        <view class="input-row border">
+          <text class="title">具体地址</text>
+          <m-input v-model="address" placeholder="具体地址"></m-input>
+        </view>
+        <view class="input-row border">
+          <text class="title">体温</text>
+          <m-input v-model="temperature" placeholder="请输入体温"></m-input>
+        </view>
       </view>
-    </view>
 
-    <view class="input-group">
-      <view class="uni-list-cell uni-list-cell-pd">
-        <view class="title">当前地区</view>
-        <biaofunRegion
-          @change="changeRegin"
-          :defaultValue="region"
-        ></biaofunRegion>
-      </view>
-      <view class="input-row border">
-        <text class="title">具体地址</text>
-        <m-input v-model="address" placeholder="具体地址"></m-input>
-      </view>
-      <view class="input-row border">
-        <text class="title">体温</text>
-        <m-input v-model="temperature" placeholder="请输入体温"></m-input>
-      </view>
-    </view>
-
-    <uni-collapse @change="change" accordion="true" showAnimation="true">
-      <uni-collapse-item title="展开填报模板">
-        <view class="ul">
-          <view v-for="item in modelList" :key="item.id">
-            <view :id="item.id" :hidden="item.hidden">
-              <label>{{ item.title === undefined ? "" : item.title }}</label>
-              <component
-                v-model="item.val"
-                :is="item.newType"
-                v-bind="item.prop"
-                @change="item.change"
-              ></component>
+      <uni-collapse @change="change" accordion="true" showAnimation="true">
+        <uni-collapse-item title="展开填报模板">
+          <view class="ul">
+            <view v-for="item in modelList" :key="item.id">
+              <view :id="item.id" :hidden="item.hidden">
+                <label>{{ item.title === undefined ? "" : item.title }}</label>
+                <component
+                  v-model="item.val"
+                  :is="item.newType"
+                  v-bind="item.prop"
+                  @change="item.change"
+                ></component>
+              </view>
             </view>
           </view>
-        </view>
-      </uni-collapse-item>
-    </uni-collapse>
-    <view class="btn-row">
-      <button type="primary" class="primary" @tap="submit">提交</button>
+        </uni-collapse-item>
+      </uni-collapse>
+      <view class="btn-row">
+        <button type="primary" class="primary" @tap="submit">提交</button>
+      </view>
     </view>
   </view>
 </template>
@@ -341,6 +343,10 @@ export default {
 </script>
 
 <style>
+
+page {
+  background-color: #f8f8f8;
+}
 .hello {
   display: flex;
   flex: 1;
@@ -349,13 +355,13 @@ export default {
 
 .title {
   color: #8f8f94;
-  margin-top: 25px;
+  /* margin-top: 25px; */
 }
 
 .ul {
   font-size: 15px;
-  color: #8f8f94;
-  margin-top: 25px;
+  color: white;
+  margin: 20px;
 }
 
 .ul > view {

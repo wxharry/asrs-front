@@ -175,9 +175,6 @@ button {
   width: 100%;
 }
 
-.center {
-  flex-direction: column;
-}
 
 .logo {
   width: 750rpx;
@@ -226,51 +223,4 @@ button {
   margin-left: 20rpx;
 }
 
-.center-list {
-  background-color: #ffffff;
-  margin-top: 20rpx;
-  width: 750rpx;
-  flex-direction: column;
-}
-
-.center-list-item {
-  height: 90rpx;
-  width: 750rpx;
-  box-sizing: border-box;
-  flex-direction: row;
-  padding: 0rpx 20rpx;
-}
-
-.border-bottom {
-  border-bottom-width: 1rpx;
-  border-color: #c8c7cc;
-  border-bottom-style: solid;
-}
-
-.list-icon {
-  width: 40rpx;
-  height: 90rpx;
-  line-height: 90rpx;
-  color: #0faeff;
-  text-align: center;
-  font-family: texticons;
-  margin-right: 20rpx;
-}
-
-.list-text {
-  height: 90rpx;
-  line-height: 90rpx;
-  color: #555;
-  flex: 1;
-  text-align: left;
-}
-
-.navigat-arrow {
-  height: 90rpx;
-  width: 40rpx;
-  line-height: 90rpx;
-  color: #555;
-  text-align: right;
-  font-family: texticons;
-}
 </style>
