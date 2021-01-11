@@ -77,8 +77,9 @@ export default {
           if (res.code === 0) {
             console.log(res);
             this.open = res.is_auto_flag;
-            this.modelList = convertModel(res.model);
-            console.log("ml", this.modelList);
+            var _self = this
+            this.modelList = convertModel(res.model, _self);
+            // console.log("ml", this.modelList);
           } else if (res.code === -5) {
             //token过期或token不合法，重新登录
             if (this.forcedLogin) {
@@ -135,9 +136,11 @@ export default {
           "id":this.modelList[i].id,
           "name": this.modelList[i].name,
           "type": this.modelList[i].type,
-          "val": this.modelList[i].val
+          "val": this.modelList[i].val,
+          "hidden": this.modelList[i].hidden
         })
       }
+      console.log("submit", model);
       this.$request({
         url: "/setPersonalModel/",
         methods: "GET",

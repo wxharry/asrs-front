@@ -11,7 +11,7 @@ function isEmptyObject(obj) {
 };
 
 
-function convObj(obj) {
+function convObj(obj, _self) {
     var ret = {}
     var content = strToJson(obj.content)
     ret["id"] = content.id
@@ -38,12 +38,17 @@ function convObj(obj) {
                 ret["change"] = function (e) {
                     // console.log("e", e.detail.value);
                     for (let i = 0; i < content.hiddenChildren.length; i++) {
-                        var x = document.getElementById(content.hiddenChildren[i])
-                        if (x.attributes.hidden) {
-                            x.removeAttribute("hidden")
-                        } else {
-                            x.setAttribute("hidden", true)
+                        for (let j = 0; j < _self.modelList.length; j++) {
+                            if (_self.modelList[j]["id"] === content.hiddenChildren[i]) {
+                                _self.modelList[j].hidden = _self.modelList[j].hidden === undefined ? "true" : undefined
+                            }
                         }
+                        // var x = document.getElementById(content.hiddenChildren[i])
+                        // if (x.attributes.hidden) {
+                        //     x.removeAttribute("hidden")
+                        // } else {
+                        //     x.setAttribute("hidden", true)
+                        // }
                     }
 
                 };
@@ -56,14 +61,20 @@ function convObj(obj) {
             // console.log("hc", content.hiddenChildren);
             if (content.hiddenChildren != undefined) {
                 ret["change"] = function (e) {
+                    // console.log("bushi", _self["bushi"]);
                     // console.log("e", e.detail.value);
                     for (let i = 0; i < content.hiddenChildren.length; i++) {
-                        var x = document.getElementById(content.hiddenChildren[i])
-                        if (x.attributes.hidden) {
-                            x.removeAttribute("hidden")
-                        } else {
-                            x.setAttribute("hidden", true)
+                        for (let j = 0; j < _self.modelList.length; j++) {
+                            if (_self.modelList[j]["id"] === content.hiddenChildren[i]) {
+                                _self.modelList[j].hidden = _self.modelList[j].hidden === undefined ? "true" : undefined
+                            }
                         }
+                        // var x = document.getElementById(content.hiddenChildren[i])
+                        // if (x.attributes.hidden) {
+                        //     x.removeAttribute("hidden")
+                        // } else {
+                        //     x.setAttribute("hidden", true)
+                        // }
                     }
                 };
             }
@@ -131,15 +142,23 @@ function convObj(obj) {
             }
             break;
         case "datepicker":
-            ret['newType'] = 'biaofun-datetime-picker';
+            ret['newType'] = 'biaofunDatetimePicker';
             ret['prop'] = {
                 defaultValue: content.Text,
-                start: "2000-02-03",
-                end:"2100-10-28",
+                start: "2021-01-01",
+                end: content.Text,
                 fields:"day"
             };
+            ret['val'] = content.Text;
+            ret['title'] = content.fieldLabel
             ret["change"] = function (e) {
-                console.log(e);
+                console.log("change",e.f1);
+                for (let j = 0; j < _self.modelList.length; j++) {
+                    if (_self.modelList[j]["id"] === ret['id']) {
+                        _self.modelList[j]['val'] = e.f1
+                    }
+                }
+                
             };
             break;
         default:
@@ -148,10 +167,11 @@ function convObj(obj) {
     return ret
 }
 
-export function convertModel(model) {
+export function convertModel(model, _self) {
     var retObj = []
+    // console.log("this", _self);
     for (let i = 0; i < model.length; i++) {
-        var result = convObj(model[i])
+        var result = convObj(model[i], _self)
         if (!isEmptyObject(result)) {
             retObj.push(result)
         }
