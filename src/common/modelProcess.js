@@ -19,6 +19,9 @@ function convObj(obj, _self) {
     ret['hidden'] = content.hidden
     ret['val'] = ""
     ret['type'] = obj.type
+    if (content.id === "p1_BaoSRQ") {
+        return ret
+    }
     switch (obj.type) {
         case "panal":
             break;
@@ -110,6 +113,9 @@ function convObj(obj, _self) {
             }
             break;
         case "textbox":
+            if (ret['id'] === 'p1_XiangXDZ') {
+                break;
+            }
             ret['title'] = content.fieldLabel
             ret["newType"] = "MInput"
             ret["prop"] = {
