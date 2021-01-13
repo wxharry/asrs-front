@@ -103,7 +103,7 @@
               <label>{{ item.title }}</label>
               <checkbox-group @change="change($event, idx)">
                 <label
-                  v-for="(option, i) in item.prop.options"
+                  v-for="(option) in item.prop.options"
                   :key="option.value"
                 >
                   <label>
@@ -225,6 +225,7 @@ export default {
           if (res.code === 0) {
             console.log(res);
             this.open = res.is_auto_flag;
+            this.defaultModel = res.default_model_flag;
             this.modelList = this.convertModel(res.model);
           } else if (res.code === -5) {
             //token过期或token不合法，重新登录
@@ -416,31 +417,29 @@ export default {
       });
     },
     switchChangeDefault: function (e) {
-      this.open = e.detail.value;
-      let token = uni.getStorageSync("uni_id_token");
-      console.log("token", token);
       // console.log("switch1 发生 change 事件，携带值为", e.detail.value);
-      // this.$request({
-      //   method: "GET",
-      //   url: "/UseDefaultModelFlag/", //是否使用默认模板
-      //   data: {
-      //     is_auto_flag: this.defaultModel ? 1 : 0,
-      //   },
-      //   success: (e) => {
-      //     console.log("success", e);
-      //     if (e.data.code === -5) {
-      //       if (this.forcedLogin) {
-      //         uni.reLaunch({
-      //           url: "../login/login",
-      //         });
-      //       } else {
-      //         uni.navigateTo({
-      //           url: "../login/login",
-      //         });
-      //       }
-      //     }
-      //   },
-      // });
+      this.defaultModel = e.detail.value;
+      this.$request({
+        method: "GET",
+        url: "/allowDefaultModel/", //是否使用默认模板
+        data: {
+          default_model_flag: this.defaultModel ? 1 : 0,
+        },
+        success: (e) => {
+          console.log("success", e);
+          if (e.data.code === -5) {
+            if (this.forcedLogin) {
+              uni.reLaunch({
+                url: "../login/login",
+              });
+            } else {
+              uni.navigateTo({
+                url: "../login/login",
+              });
+            }
+          }
+        },
+      });
     },
     strToJson: function (str) {
       return JSON.parse(str.replace(/'/g, '"').replace(/\\/g, ""));
