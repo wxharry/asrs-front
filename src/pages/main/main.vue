@@ -47,14 +47,15 @@
         <uni-collapse-item title="展开填报模板"> -->
       <view class="ul">
         <view v-for="(item, idx) in modelList" :key="item.id">
+            {{ idx }}{{ item.type }}
           <view :id="item.id" :name="item.name" :hidden = item.hidden>
-            <!-- {{ idx }}{{ item.type }} -->
 
             <view v-if="item.type === 'checkbox'">
-              <checkbox-group id='1' @change="change($event, idx)">
+              <checkbox-group @change="change($event, idx)">
                 <label>
                   <checkbox
                     style="transform: scale(0.75)"
+                    :value="'true'"
                     :checked="item.prop.checked"
                   />{{ item.prop.text }}</label
                 >
@@ -222,7 +223,7 @@ export default {
           // console.log("success", e);
           var res = e.data;
           if (res.code === 0) {
-            // console.log(res);
+            console.log(res);
             this.open = res.is_auto_flag;
             this.modelList = this.convertModel(res.model);
           } else if (res.code === -5) {
@@ -274,10 +275,11 @@ export default {
   methods: {
     ...mapMutations(["login"]),
     change(e, idx){
+      console.log(e.detail.value);
       this.modelList[idx]['val'] = e.detail.value
       var children = this.modelList[idx]['child']
       if (children != undefined) {
-        console.log(children);
+        // console.log(children);
         for (let i = 0; i < children.length; i++) {
           const child_id = children[i]
           for (let j = 0; j < this.modelList.length; j++) {
@@ -451,7 +453,7 @@ export default {
         case "numberbox":
           break;
         case "checkbox":
-          ret["val"] = "0";
+          ret["val"] = content.checked === "true"?['true']:[];
           ret["prop"] = {
             checked: content.checked === "true",
             text:
