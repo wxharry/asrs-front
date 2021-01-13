@@ -42,24 +42,101 @@
           <m-input v-model="temperature" placeholder="请输入体温"></m-input>
         </view>
       </view>
-
+      <!-- 
       <uni-collapse @change="change" accordion="true" showAnimation="true">
-        <uni-collapse-item title="展开填报模板">
-          <view class="ul">
-            <view v-for="item in modelList" :key="item.id">
-              <view :id="item.id" :hidden="item.hidden">
-                <label>{{ item.title === undefined ? "" : item.title }}</label>
-                <component
-                  v-model="item.val"
-                  :is="item.newType"
-                  v-bind="item.prop"
-                  @change="item.change"
-                ></component>
+        <uni-collapse-item title="展开填报模板"> -->
+      <view class="ul">
+        <view v-for="(item, idx) in modelList" :key="item.id">
+          <view :id="item.id" :name="item.name" :hidden = item.hidden>
+            <!-- {{ idx }}{{ item.type }} -->
+
+            <view v-if="item.type === 'checkbox'">
+              <checkbox-group id='1' @change="change($event, idx)">
+                <label>
+                  <checkbox
+                    style="transform: scale(0.75)"
+                    :checked="item.prop.checked"
+                  />{{ item.prop.text }}</label
+                >
+              </checkbox-group>
+            </view>
+
+            <view v-if="item.type === 'label'">
+              <label>{{ item.text }}</label>
+            </view>
+
+            <view v-if="item.type === 'radiobuttonlist'">
+              <label>{{ item.title }}</label>
+              <radio-group @change="change($event, idx)">
+                <label
+                  v-for="(option, i) in item.prop.options"
+                  :key="option.value"
+                >
+                  <label>
+                    <radio
+                      style="transform: scale(0.75)"
+                      :value="option.value"
+                      :checked="item.val === option.value"
+                    />
+                    {{ item.prop.options[i].value }}
+                  </label>
+                </label>
+              </radio-group>
+            </view>
+
+            <view v-if="item.type === 'datepicker'">
+              <label>{{ item.title }}</label>
+              <picker
+                mode="date"
+                fields="day"
+                :value="item.val"
+                :start="item.prop.start"
+                :end="item.prop.end"
+                @change="change($event, idx)"
+              >
+                <view class="uni-input">{{ item.val }}</view>
+              </picker>
+            </view>
+
+            <view v-if="item.type === 'checkboxlist'">
+              <label>{{ item.title }}</label>
+              <checkbox-group @change="change($event, idx)">
+                <label
+                  v-for="(option, i) in item.prop.options"
+                  :key="option.value"
+                >
+                  <label>
+                    <checkbox
+                      style="transform: scale(0.75)"
+                      :value="option.value"
+                      :checked="item.val === option.value"
+                    />
+                  </label>
+                  {{ item.prop.options[i].value }}
+                </label>
+              </checkbox-group>
+            </view>
+
+            <view v-if="item.type === 'textarea'">
+              <label>{{ item.title }}</label>
+              <view class="uni-textarea">
+                <textarea @blur="change($event, idx)" auto-height />
               </view>
             </view>
+
+            <view v-if="item.id === 'p1_GeLDZ'">
+              <label>{{ item.title }}</label>
+              <input
+                class="uni-input"
+                @input="change($event, idx)"
+                placeholder="详细地址"
+              />
+            </view>
           </view>
-        </uni-collapse-item>
-      </uni-collapse>
+        </view>
+      </view>
+      <!-- </uni-collapse-item>
+      </uni-collapse> -->
       <view class="btn-row">
         <button type="primary" class="primary" @tap="submit">提交</button>
       </view>
@@ -76,7 +153,7 @@ import {
   uniCollapse,
   uniCollapseItem,
 } from "@dcloudio/uni-ui";
-import { convertModel } from "@/common/modelProcess.js";
+// import { convertModel } from "@/common/modelProcess.js";
 import MInput from "../../components/m-input.vue";
 import biaofunDatetimePicker from "@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue";
 import biaofunRegion from "@/components/biaofun-region/biaofun-region.vue";
@@ -116,7 +193,7 @@ export default {
         url: "/getUserInfo/",
         methods: "GET",
         success: (e) => {
-          console.log("success info", e);
+          // console.log("success info", e);
           var res = e.data;
           if (res.code === 0) {
             // console.log(res);
@@ -142,14 +219,12 @@ export default {
         method: "GET",
         url: "/getModel/",
         success: (e) => {
-          console.log("success", e);
+          // console.log("success", e);
           var res = e.data;
           if (res.code === 0) {
-            console.log(res);
+            // console.log(res);
             this.open = res.is_auto_flag;
-            var _self = this;
-            this.modelList = convertModel(res.model, _self);
-            // console.log("ml", this.modelList);
+            this.modelList = this.convertModel(res.model);
           } else if (res.code === -5) {
             //token过期或token不合法，重新登录
             if (this.forcedLogin) {
@@ -198,6 +273,23 @@ export default {
   },
   methods: {
     ...mapMutations(["login"]),
+    change(e, idx){
+      this.modelList[idx]['val'] = e.detail.value
+      var children = this.modelList[idx]['child']
+      if (children != undefined) {
+        console.log(children);
+        for (let i = 0; i < children.length; i++) {
+          const child_id = children[i]
+          for (let j = 0; j < this.modelList.length; j++) {
+            const element = this.modelList[j];
+            if (element['id'] === child_id) {
+              element["hidden"] = element["hidden"] === undefined ? 'true' : undefined
+            }
+            
+          }
+        }
+      }
+    },
     submit() {
       var model = [];
       for (let i = 0; i < this.modelList.length; i++) {
@@ -209,6 +301,7 @@ export default {
           hidden: this.modelList[i].hidden,
         });
       }
+      console.log("model", model);
       const data = {
         model: JSON.stringify(model),
         location: {
@@ -338,12 +431,122 @@ export default {
       //   },
       // });
     },
+    strToJson: function (str) {
+      return JSON.parse(str.replace(/'/g, '"').replace(/\\/g, ""));
+    },
+
+    convObj: function (obj) {
+      var ret = {};
+      var content = JSON.parse(
+        obj.content.replace(/'/g, '"').replace(/\\/g, "").replace(/None/g, "\"\"")
+      );
+      ret["id"] = content.id;
+      ret["name"] = content.name;
+      ret["hidden"] = content.hidden;
+      ret["val"] = "";
+      ret["type"] = obj.type;
+      ret['child'] = content.hiddenChildren
+      switch (obj.type) {
+        case "panal":
+        case "numberbox":
+          break;
+        case "checkbox":
+          ret["val"] = "0";
+          ret["prop"] = {
+            checked: content.checked === "true",
+            text:
+              content.inputLabel != undefined
+                ? content.inputLabel
+                : content.fieldLabel,
+          };
+          break;
+        case "radiobuttonlist":
+          ret["title"] = content.fieldLabel;
+          ret["val"] = content.SelectedValue;
+          ret["prop"] = {
+            options: [],
+          };
+          for (let i = 0; i < content.F_Items.length; i++) {
+            ret["prop"]["options"].push({
+              value: content.F_Items[i][0],
+              text: content.F_Items[i][0],
+            });
+          }
+          break;
+        case "checkboxlist":
+          ret["title"] = content.fieldLabel;
+          ret["val"] = content.SelectedValueArray;
+          ret["prop"] = {
+            checked: content.checked,
+            options: [],
+          };
+          for (let i = 0; i < content.F_Items.length; i++) {
+            ret["prop"]["options"].push({
+              value: content.F_Items[i][0],
+              text: content.F_Items[i][0],
+            });
+          }
+          break;
+        case "label":
+          ret["text"] = content.value;
+          break;
+        case "textbox":
+          if (ret["id"] === "p1_XiangXDZ") {
+            break;
+          }
+          ret["title"] = content.fieldLabel;
+          break;
+        case "textarea":
+          ret["title"] = content.fieldLabel;
+          break;
+        case "dropdownlist":
+          // 正常情况用不到，但是他用下拉框处理是否了，特殊处理
+          if (content.id != "p1_QueZHZJC") {
+            break;
+          }
+          ret["title"] = content.fieldLabel;
+          ret["newType"] = "uniDataCheckbox";
+          ret["val"] = content.SelectedValueArray[0];
+          ret["prop"] = {
+            multiple: false,
+            localdata: [],
+          };
+          for (let i = 0; i < content.F_Items.length; i++) {
+            ret["prop"]["localdata"].push({
+              value: content.F_Items[i][0],
+              text: content.F_Items[i][0],
+            });
+          }
+          break;
+        case "datepicker":
+          ret["val"] = content.Text === undefined ? "" : content.Text;
+          ret["title"] = content.fieldLabel;
+          ret["prop"] = {
+            start: "2021-01-01",
+            end: content.Text,
+          };
+          break;
+        default:
+          break;
+      }
+      return ret;
+    },
+
+    convertModel: function (model) {
+      var retObj = [];
+      for (let i = 0; i < model.length; i++) {
+        // console.log("model[i]", model[i]);
+        var result = this.convObj(model[i]);
+        retObj.push(result);
+      }
+      // console.log("retObj", retObj);
+      return retObj;
+    },
   },
 };
 </script>
 
 <style>
-
 page {
   background-color: #f8f8f8;
 }
@@ -360,7 +563,7 @@ page {
 
 .ul {
   font-size: 15px;
-  color: white;
+  color: gray;
   margin: 20px;
 }
 
