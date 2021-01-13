@@ -47,7 +47,7 @@
         <uni-collapse-item title="展开填报模板"> -->
       <view class="ul">
         <view v-for="(item, idx) in modelList" :key="item.id">
-            {{ idx }}{{ item.type }}
+            <!-- {{ idx }}{{ item.type }} -->
           <view :id="item.id" :name="item.name" :hidden = item.hidden>
 
             <view v-if="item.type === 'checkbox'">
@@ -110,10 +110,10 @@
                     <checkbox
                       style="transform: scale(0.75)"
                       :value="option.value"
-                      :checked="item.val === option.value"
+                      :checked="isInArray(option.value,item.val)"
                     />
                   </label>
-                  {{ item.prop.options[i].value }}
+                  {{ option.value }}
                 </label>
               </checkbox-group>
             </view>
@@ -275,7 +275,7 @@ export default {
   methods: {
     ...mapMutations(["login"]),
     change(e, idx){
-      console.log(e.detail.value);
+      // console.log(e.detail.value);
       this.modelList[idx]['val'] = e.detail.value
       var children = this.modelList[idx]['child']
       if (children != undefined) {
@@ -291,6 +291,15 @@ export default {
           }
         }
       }
+    },
+    isInArray(e, array){
+      for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+        if (e === element) {
+          return true;
+        }
+      }
+      return undefined;
     },
     submit() {
       var model = [];
