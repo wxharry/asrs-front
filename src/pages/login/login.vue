@@ -1,21 +1,5 @@
 <template>
 	<view class="content">
-		<!-- <view class="login-type">
-			<view v-for="(item,index) in loginTypeList" :key="index" @click="loginType = index" :class="{act: loginType === index}"
-			 class="login-type-btn">{{item}}</view>
-		</view> -->
-		<!-- <view class="input-group" v-if="loginType === 0">
-			<view class="input-row border">
-				<text class="title">手机：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="mobile" placeholder="请输入手机号码"></m-input>
-			</view>
-			<view class="input-row">
-				<text class="title">验证码：</text>
-				<m-input type="text" v-model="code" placeholder="请输入验证码"></m-input>
-				<view class="send-code-btn" @click="sendSmsCode">{{codeDuration ? codeDuration + 's' : '发送验证码' }}</view>
-			</view>
-		</view> -->
-		<!-- <view class="input-group" v-else> -->
 		<view class="input-group">
 			<view class="input-row border">
 				<text class="title">账号：</text>
@@ -61,7 +45,6 @@
 		data() {
 			return {
 				loginType: 1,
-				loginTypeList: ['免密登录', '密码登录'],
 				mobile: '',
 				code: '',
 				providerList: [],
@@ -263,6 +246,7 @@
 			getUserInfo({
 				detail
 			}) {
+				console.log("detail", detail);
 				console.log('三方登录只演示登录api能力，暂未关联云端数据');
 				if (detail.userInfo) {
 					this.loginLocal(detail.userInfo.nickName);
@@ -290,6 +274,7 @@
 			},
 			toLogin(value) {
 				if (value === 'weixin') {
+					console.log(value);
 					this.loginByWeixin(value)
 					return;
 				}
@@ -315,6 +300,7 @@
 										 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
 										 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
 										 */
+										console.log("info", infoRes);
 										this.loginLocal(infoRes.userInfo.nickName);
 									},
 									fail() {

@@ -47,9 +47,8 @@
         <uni-collapse-item title="展开填报模板"> -->
       <view class="ul">
         <view v-for="(item, idx) in modelList" :key="item.id">
-            <!-- {{ idx }}{{ item.type }} -->
-          <view :id="item.id" :name="item.name" :hidden = item.hidden>
-
+          <!-- {{ idx }}{{ item.type }} -->
+          <view :id="item.id" :name="item.name" :hidden="item.hidden">
             <view v-if="item.type === 'checkbox'">
               <checkbox-group @change="change($event, idx)">
                 <label>
@@ -102,15 +101,12 @@
             <view v-if="item.type === 'checkboxlist'">
               <label>{{ item.title }}</label>
               <checkbox-group @change="change($event, idx)">
-                <label
-                  v-for="(option) in item.prop.options"
-                  :key="option.value"
-                >
+                <label v-for="option in item.prop.options" :key="option.value">
                   <label>
                     <checkbox
                       style="transform: scale(0.75)"
                       :value="option.value"
-                      :checked="isInArray(option.value,item.val)"
+                      :checked="isInArray(option.value, item.val)"
                     />
                   </label>
                   {{ option.value }}
@@ -149,12 +145,9 @@
 import { mapState, mapMutations } from "vuex";
 import { univerifyLogin } from "@/common/univerify.js";
 import {
-  UniDataCheckbox,
-  UniNoticeBar,
   uniCollapse,
   uniCollapseItem,
 } from "@dcloudio/uni-ui";
-// import { convertModel } from "@/common/modelProcess.js";
 import MInput from "../../components/m-input.vue";
 import biaofunDatetimePicker from "@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue";
 import biaofunRegion from "@/components/biaofun-region/biaofun-region.vue";
@@ -162,8 +155,6 @@ import biaofunRegion from "@/components/biaofun-region/biaofun-region.vue";
 export default {
   computed: mapState(["forcedLogin", "hasLogin", "userName"]),
   components: {
-    UniDataCheckbox,
-    UniNoticeBar,
     MInput,
     biaofunDatetimePicker,
     biaofunRegion,
@@ -275,25 +266,25 @@ export default {
   },
   methods: {
     ...mapMutations(["login"]),
-    change(e, idx){
+    change(e, idx) {
       // console.log(e.detail.value);
-      this.modelList[idx]['val'] = e.detail.value
-      var children = this.modelList[idx]['child']
+      this.modelList[idx]["val"] = e.detail.value;
+      var children = this.modelList[idx]["child"];
       if (children != undefined) {
         // console.log(children);
         for (let i = 0; i < children.length; i++) {
-          const child_id = children[i]
+          const child_id = children[i];
           for (let j = 0; j < this.modelList.length; j++) {
             const element = this.modelList[j];
-            if (element['id'] === child_id) {
-              element["hidden"] = element["hidden"] === undefined ? 'true' : undefined
+            if (element["id"] === child_id) {
+              element["hidden"] =
+                element["hidden"] === undefined ? "true" : undefined;
             }
-            
           }
         }
       }
     },
-    isInArray(e, array){
+    isInArray(e, array) {
       for (let i = 0; i < array.length; i++) {
         const element = array[i];
         if (e === element) {
@@ -313,7 +304,7 @@ export default {
           hidden: this.modelList[i].hidden,
         });
       }
-      console.log("model", model);
+      // console.log("model", model);
       const data = {
         model: JSON.stringify(model),
         location: {
@@ -323,7 +314,7 @@ export default {
           address: this.address,
         },
       };
-      console.log("submit", data);
+      // console.log("submit", data);
       this.$request({
         url: "/setPersonalModel/",
         methods: "GET",
@@ -336,7 +327,12 @@ export default {
             this.sheng = res.sheng;
             this.shi = res.shi;
             this.xian = res.xian;
-          } else if (res.code === -5) {
+              // console.log(res);
+              uni.showToast({
+                icon: "none",
+                title: "提交成功",
+              });
+            }  else if (res.code === -5) {
             //token过期或token不合法，重新登录
             if (this.forcedLogin) {
               uni.reLaunch({
@@ -347,6 +343,12 @@ export default {
                 url: "../login/login",
               });
             }
+          }else {
+              // console.log(res);
+              uni.showModal({
+                content: res.msg,
+                showCancel: false,
+              });
           }
         },
       });
@@ -448,20 +450,20 @@ export default {
     convObj: function (obj) {
       var ret = {};
       var content = JSON.parse(
-        obj.content.replace(/'/g, '"').replace(/\\/g, "").replace(/None/g, "\"\"")
+        obj.content.replace(/'/g, '"').replace(/\\/g, "").replace(/None/g, '""')
       );
       ret["id"] = content.id;
       ret["name"] = content.name;
       ret["hidden"] = content.hidden;
       ret["val"] = "";
       ret["type"] = obj.type;
-      ret['child'] = content.hiddenChildren
+      ret["child"] = content.hiddenChildren;
       switch (obj.type) {
         case "panal":
         case "numberbox":
           break;
         case "checkbox":
-          ret["val"] = content.checked === "true"?['true']:[];
+          ret["val"] = content.checked === "true" ? ["true"] : [];
           ret["prop"] = {
             checked: content.checked === "true",
             text:
