@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import jsencrypt from '@/components/jsencrypt/jsencrypt.vue';
+
 import mInput from "../../components/m-input.vue";
 import { uniPopupDialog } from "@dcloudio/uni-ui";
 export default {
@@ -121,7 +123,8 @@ export default {
         url: "/register/",
         data: {
           username: this.username,
-          password: this.password,
+          // password: this.password,
+					password: jsencrypt.setEncrypt(uni.getStorageSync('publicKey'), this.password),
           email: this.email,
         },
         success(e) {
