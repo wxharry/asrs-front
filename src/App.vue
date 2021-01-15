@@ -3,6 +3,19 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   onLaunch: function () {
+    // 临时获取publicKey
+    this.$request({
+      url: "/test2/",
+      method: "GET",
+      success: (e) => {
+        console.log(e.data);
+        uni.setStorageSync("publicKey", e.data.msg);
+      },
+      fail: (e) => {
+        console.log(e);
+      },
+    });
+
     console.log("App Launch");
     let uniIdToken = uni.getStorageSync("uni_id_token");
     if (uniIdToken) {

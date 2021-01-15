@@ -158,8 +158,8 @@ export default {
     MInput,
     biaofunDatetimePicker,
     biaofunRegion,
-    uniCollapse,
-    uniCollapseItem,
+    // uniCollapse,
+    // uniCollapseItem,
   },
   data() {
     return {

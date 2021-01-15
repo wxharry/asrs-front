@@ -28,6 +28,8 @@
 </template>
 
 <script>
+	import jsencrypt from '@/components/jsencrypt/jsencrypt.vue';
+
 	import {
 		mapState,
 		mapMutations
@@ -107,7 +109,8 @@
 			loginByPwd() {
 				const data = {
 					username: this.username,
-					password: this.password
+					// password: this.password
+					password: jsencrypt.setEncrypt(uni.getStorageSync('publicKey'), this.password)
 				};
 				let _self = this;
 				this.loginBtnLoading = true
