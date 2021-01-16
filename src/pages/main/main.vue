@@ -42,9 +42,6 @@
           <m-input v-model="temperature" placeholder="请输入体温"></m-input>
         </view>
       </view>
-      <!-- 
-      <uni-collapse @change="change" accordion="true" showAnimation="true">
-        <uni-collapse-item title="展开填报模板"> -->
       <view class="ul">
         <view v-for="(item, idx) in modelList" :key="item.id">
           <!-- {{ idx }}{{ item.type }} -->
@@ -91,7 +88,8 @@
                 fields="day"
                 :value="item.val"
                 :start="item.prop.start"
-                :end="item.prop.end"
+                :end="item.prop.start"
+                :disabled="item.id === 'p1_BaoSRQ'"
                 @change="change($event, idx)"
               >
                 <view class="uni-input">{{ item.val }}</view>
@@ -132,8 +130,6 @@
           </view>
         </view>
       </view>
-      <!-- </uni-collapse-item>
-      </uni-collapse> -->
       <view class="btn-row">
         <button type="primary" class="primary" @tap="submit">提交</button>
       </view>
@@ -144,10 +140,6 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import { univerifyLogin } from "@/common/univerify.js";
-import {
-  uniCollapse,
-  uniCollapseItem,
-} from "@dcloudio/uni-ui";
 import MInput from "../../components/m-input.vue";
 import biaofunDatetimePicker from "@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue";
 import biaofunRegion from "@/components/biaofun-region/biaofun-region.vue";
@@ -158,8 +150,6 @@ export default {
     MInput,
     biaofunDatetimePicker,
     biaofunRegion,
-    // uniCollapse,
-    // uniCollapseItem,
   },
   data() {
     return {
@@ -170,9 +160,11 @@ export default {
       region: [],
       address: "",
       temperature: "",
+      date: "",
     };
   },
   onLoad() {
+    this.getDateFormat();
     const loginType = uni.getStorageSync("login_type");
     if (loginType === "local") {
       this.login(uni.getStorageSync("username"));
@@ -266,6 +258,28 @@ export default {
   },
   methods: {
     ...mapMutations(["login"]),
+    isValidTemp(val) {
+      if (parseFloat(val).toString() == "NaN") {
+        console.log(parseFloat(val).toString());
+        return false;
+      } else if (parseFloat(val) < 25 || parseFloat(val) > 45) {
+        return false;
+      }
+      return true;
+    },
+    getDateFormat() {
+      var nowDate = new Date();
+      var year = nowDate.getFullYear();
+      var month =
+        nowDate.getMonth() + 1 < 10
+          ? "0" + (nowDate.getMonth() + 1)
+          : nowDate.getMonth() + 1;
+      var day =
+        nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+      var dateStr = year + "-" + month + "-" + day;
+      this.today = dateStr;
+      return dateStr;
+    },
     change(e, idx) {
       // console.log(e.detail.value);
       this.modelList[idx]["val"] = e.detail.value;
@@ -295,13 +309,35 @@ export default {
     },
     submit() {
       var model = [];
+      if (!this.isValidTemp(this.temperature)) {
+        uni.showModal({
+          content: "体温填写异常！",
+          showCancel: false,
+        });
+        return;
+      }
+      console.log(this.modelList);
       for (let i = 0; i < this.modelList.length; i++) {
+        const element = this.modelList[i];
+        if (
+          element.hidden === undefined &&
+          element.val === "" &&
+          element.title != undefined &&
+          (element.type === "textbox" || element.type === "textarea")
+        ) {
+          // console.log(i);
+          uni.showModal({
+            content: element.title + "未填写",
+            showCancel: false,
+          });
+          return;
+        }
         model.push({
-          id: this.modelList[i].id,
-          name: this.modelList[i].name,
-          type: this.modelList[i].type,
-          val: this.modelList[i].val,
-          hidden: this.modelList[i].hidden,
+          id: element.id,
+          name: element.name,
+          type: element.type,
+          val: element.val,
+          hidden: element.hidden,
         });
       }
       // console.log("model", model);
@@ -315,43 +351,43 @@ export default {
         },
       };
       // console.log("submit", data);
-      this.$request({
-        url: "/setPersonalModel/",
-        methods: "GET",
-        data: data,
-        success: (e) => {
-          console.log("success", e);
-          var res = e.data;
-          if (res.code === 0) {
-            // console.log(res);
-            this.sheng = res.sheng;
-            this.shi = res.shi;
-            this.xian = res.xian;
-              // console.log(res);
-              uni.showToast({
-                icon: "none",
-                title: "提交成功",
-              });
-            }  else if (res.code === -5) {
-            //token过期或token不合法，重新登录
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
-          }else {
-              // console.log(res);
-              uni.showModal({
-                content: res.msg,
-                showCancel: false,
-              });
-          }
-        },
-      });
+      // this.$request({
+      //   url: "/setPersonalModel/",
+      //   methods: "GET",
+      //   data: data,
+      //   success: (e) => {
+      //     console.log("success", e);
+      //     var res = e.data;
+      //     if (res.code === 0) {
+      //       // console.log(res);
+      //       this.sheng = res.sheng;
+      //       this.shi = res.shi;
+      //       this.xian = res.xian;
+      //       // console.log(res);
+      //       uni.showToast({
+      //         icon: "none",
+      //         title: "提交成功",
+      //       });
+      //     } else if (res.code === -5) {
+      //       //token过期或token不合法，重新登录
+      //       if (this.forcedLogin) {
+      //         uni.reLaunch({
+      //           url: "../login/login",
+      //         });
+      //       } else {
+      //         uni.navigateTo({
+      //           url: "../login/login",
+      //         });
+      //       }
+      //     } else {
+      //       // console.log(res);
+      //       uni.showModal({
+      //         content: res.msg,
+      //         showCancel: false,
+      //       });
+      //     }
+      //   },
+      // });
     },
     changeDatetimePicker(e) {
       console.log("e", e);
@@ -531,11 +567,11 @@ export default {
           }
           break;
         case "datepicker":
-          ret["val"] = content.Text === undefined ? "" : content.Text;
+          ret["val"] = this.today === undefined ? "" : this.today;
           ret["title"] = content.fieldLabel;
           ret["prop"] = {
             start: "2021-01-01",
-            end: content.Text,
+            end: this.today,
           };
           break;
         default:
