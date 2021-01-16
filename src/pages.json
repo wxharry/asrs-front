@@ -45,6 +45,11 @@
 			"style": {
 				"navigationBarTitleText": "邀请好友"
 			}
+		}, {
+			"path": "pages/about/about",
+			"style": {
+				"navigationBarTitleText": "关于应用"
+			}
 		}
 	],
 	"tabBar": {

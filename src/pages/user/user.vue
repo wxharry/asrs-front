@@ -27,19 +27,19 @@
         </view>
       </view>
       <view class="center-list">
-        <view class="center-list-item border-bottom">
+        <view class="center-list-item border-bottom" @click="popUnfinish">
           <text class="list-icon">&#xe60b;</text>
           <text class="list-text">帮助与反馈</text>
           <text class="navigat-arrow">&#xe65e;</text>
         </view>
-        <view class="center-list-item">
+        <view class="center-list-item" @click="popUnfinish">
           <text class="list-icon">&#xe65f;</text>
           <text class="list-text">服务条款及隐私</text>
           <text class="navigat-arrow">&#xe65e;</text>
         </view>
       </view>
       <view class="center-list">
-        <view class="center-list-item">
+        <view class="center-list-item" @click="toAbout">
           <text class="list-icon">&#xe614;</text>
           <text class="list-text">关于应用</text>
           <text class="navigat-arrow">&#xe65e;</text>
@@ -149,6 +149,17 @@ export default {
         url: "/pages/info/info",
       });
     },
+    toAbout() {
+      uni.navigateTo({
+        url: "/pages/about/about",
+      });
+    },
+    popUnfinish() {
+      uni.showModal({
+        content: "尚未开通",
+        showCancel: false,
+      });
+    },
   },
 };
 </script>
@@ -174,7 +185,6 @@ page {
 button {
   width: 100%;
 }
-
 
 .logo {
   width: 750rpx;
@@ -222,5 +232,4 @@ button {
   flex-direction: column;
   margin-left: 20rpx;
 }
-
 </style>
