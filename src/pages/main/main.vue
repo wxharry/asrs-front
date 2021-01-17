@@ -207,7 +207,7 @@ export default {
           var res = e.data;
           if (res.code === 0) {
             console.log(res);
-            this.open = res.is_auto_flag;
+            this.auto = res.is_auto_flag;
             this.defaultModel = res.default_model_flag;
             this.modelList = this.convertModel(res.model);
           } else if (res.code === -5) {
