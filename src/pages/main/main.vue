@@ -360,43 +360,43 @@ export default {
         },
       };
       // console.log("submit", data);
-      this.$request({
-        url: "/setPersonalModel/",
-        methods: "GET",
-        data: data,
-        success: (e) => {
-          console.log("success", e);
-          var res = e.data;
-          if (res.code === 0) {
-            // console.log(res);
-            this.sheng = res.sheng;
-            this.shi = res.shi;
-            this.xian = res.xian;
-              // console.log(res);
-              uni.showToast({
-                icon: "none",
-                title: "提交成功",
-              });
-            }  else if (res.code === -5) {
-            //token过期或token不合法，重新登录
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
-          }else {
-              // console.log(res);
-              uni.showModal({
-                content: res.msg,
-                showCancel: false,
-              });
-          }
-        },
-      });
+      // this.$request({
+      //   url: "/setPersonalModel/",
+      //   methods: "GET",
+      //   data: data,
+      //   success: (e) => {
+      //     console.log("success", e);
+      //     var res = e.data;
+      //     if (res.code === 0) {
+      //       // console.log(res);
+      //       this.sheng = res.sheng;
+      //       this.shi = res.shi;
+      //       this.xian = res.xian;
+      //       // console.log(res);
+      //       uni.showToast({
+      //         icon: "none",
+      //         title: "提交成功",
+      //       });
+      //     } else if (res.code === -5) {
+      //       //token过期或token不合法，重新登录
+      //       if (this.forcedLogin) {
+      //         uni.reLaunch({
+      //           url: "../login/login",
+      //         });
+      //       } else {
+      //         uni.navigateTo({
+      //           url: "../login/login",
+      //         });
+      //       }
+      //     } else {
+      //       // console.log(res);
+      //       uni.showModal({
+      //         content: res.msg,
+      //         showCancel: false,
+      //       });
+      //     }
+      //   },
+      // });
     },
     changeDatetimePicker(e) {
       console.log("e", e);
