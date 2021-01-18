@@ -37,12 +37,17 @@
           <text class="title">具体地址</text>
           <m-input v-model="address" placeholder="具体地址"></m-input>
         </view>
-        <view class="input-row border">
+        <view class="input-row">
           <text class="title">体温</text>
           <m-input v-model="temperature" placeholder="请输入体温"></m-input>
         </view>
       </view>
-      <view class="ul">
+      <view class="center-list" @click="showModal = !showModal">
+        <view class="input-row">
+          <text class="title">填报模板</text>
+      </view>
+      </view>
+      <view class="ul" v-if="showModal">
         <view v-for="(item, idx) in modelList" :key="item.id">
           <!-- {{ idx }}{{ item.type }} -->
           <view :id="item.id" :name="item.name" :hidden="item.hidden">
@@ -88,7 +93,7 @@
                 fields="day"
                 :value="item.val"
                 :start="item.prop.start"
-                :end="item.prop.start"
+                :end="item.prop.end"
                 :disabled="item.id === 'p1_BaoSRQ'"
                 @change="change($event, idx)"
               >
@@ -161,6 +166,7 @@ export default {
       address: "",
       temperature: "",
       date: "",
+      showModal:false
     };
   },
   onLoad() {
