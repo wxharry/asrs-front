@@ -14,7 +14,25 @@
 				logining: false
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			// #ifdef MP-WEIXIN
+			// 判断微信小程序是否已经授权
+			uni.getSetting({
+				success(res) {
+					console.log('授权: ', res)
+					if (!res.authSetting['scope.userInfo']) {
+						console.log('未授权, 停留在此页进行授权操作。')
+					} else {
+						console.log('已授权，刷新session信息保持登录状态。')
+						
+						uni.reLaunch({
+							url: '../main/main'
+						})
+					}
+				}
+			})
+			// #endif
+		},
 		methods: {
 			wxLogin(e) {
 				const that = this;
@@ -39,21 +57,23 @@
 										rawData: info_res.rawData
 									},
 									success(res) {
-										console.log(res.data)
-										// if (res.data.status == 200) {
-										// 	that.$store.commit('login', userInfo);
-										// 	// uni.setStorageSync("userInfo",userInfo);
-										// 	// uni.setStorageSync("skey", res.data.data);
-										// } else {
-										// 	console.log('服务器异常')
-										// }
+										// 如果授权成功，跳转到主页，在那里进行账号绑定（和session注入）
+										console.log('200: ', res.data)
+										uni.setStorageSync('uni_id_token', res.data.sessionId)
+										// 温馨提示：uni.navigateTo只能用于非tabbar页面的跳转
+										uni.reLaunch({
+											url: '../main/main'
+										})
+										
+										
+										
 									},
 									fail(error) {
 										console.log(error)
 									}
 								})
 								uni.hideLoading()
-								uni.navigateBack()
+								// uni.navigateBack()
 							}
 						})
 
