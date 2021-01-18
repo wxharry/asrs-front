@@ -11,6 +11,11 @@
 				"navigationBarTitleText": "登录"
 			}
 		}, {
+			"path": "pages/wxAuth/wxAuth",
+			"style": {
+				"navigationBarTitleText": "授权"
+			}
+		}, {
 			"path": "pages/reg/reg",
 			"style": {
 				"navigationBarTitleText": "注册"
