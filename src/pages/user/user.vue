@@ -45,7 +45,7 @@
           <text class="navigat-arrow">&#xe65e;</text>
         </view>
       </view>
-      <view class="btn-row">
+      <view class="btn-row" v-if="platform === 'h5'">
         <button
           v-if="hasLogin"
           class="primary"
@@ -70,12 +70,16 @@ export default {
       inviteUrl: "",
       logoutBtnLoading: false,
       hasPwd: uni.getStorageSync("uni_id_has_pwd"),
+      platform: "",
     };
   },
+
   computed: {
     ...mapState(["hasLogin", "forcedLogin", "userName"]),
   },
-
+  onLoad() {
+    this.platform = process.env.VUE_APP_PLATFORM;
+  },
   methods: {
     ...mapMutations(["logout"]),
     bindLogin() {

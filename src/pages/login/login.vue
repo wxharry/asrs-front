@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view class="btn-row">
-			<button type="primary" class="primary" :loading="loginBtnLoading" @tap="bindLogin">登录</button>
+			<button type="primary" class="primary" :loading="loginBtnLoading" @tap="bindLogin">{{platform === 'h5'?'登陆':'绑定'}}</button>
 		</view>
 		<!-- <view class="action-row">
 			<navigator url="../reg/reg">如何注册</navigator>
@@ -57,12 +57,14 @@
 				isDevtools: false,
 				codeDuration: 0,
 				loginBtnLoading: false,
-				inviteCode: ''
+				inviteCode: '',
+				platform:''
 			}
 		},
 		computed: mapState(['forcedLogin', 'hasLogin', 'univerifyErrorMsg', 'hideUniverify']),
 		onLoad() {
 			console.log("env",process.env.NODE_ENV ,process.env.VUE_APP_PLATFORM);
+			this.platform = process.env.VUE_APP_PLATFORM;
 			// #ifdef APP-PLUS
 			plus.oauth.getServices((services) => {
 				weixinAuthService = services.find((service) => {
