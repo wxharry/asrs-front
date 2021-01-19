@@ -1,8 +1,11 @@
 <template>
 	<view class="container">
-		<view class="left-top-sign">LOGIN</view>
-		<view class="welcome">欢迎回来！</view>
-		<button class="confirm-btn" open-type="getUserInfo" @getuserinfo="wxLogin" :disabled="logining">微信授权登录</button>
+		<view class="oauth-row">
+			<view class="oauth-image">
+				<image src="../../static/img/weixin.png"></image>
+				<button open-type="getUserInfo" @getuserinfo="wxLogin"></button>
+			</view>
+		</view>		
 	</view>
 </template>
 ​
@@ -24,7 +27,7 @@
 						console.log('未授权, 停留在此页进行授权操作。')
 					} else {
 						console.log('已授权，刷新session信息保持登录状态。')
-						
+						// 还没写
 						uni.reLaunch({
 							url: '../main/main'
 						})
@@ -85,44 +88,39 @@
 </script>
 ​
 <style lang="scss">
-	.container {
+	.oauth-row {
 		display: flex;
-		overflow: hidden;
-		background: #fff;
-		flex-direction: column;
+		flex-direction: row;
 		justify-content: center;
-
-		.left-top-sign {
-			font-size: 120upx;
-			color: blue($color: #000000);
-			position: relative;
-			left: -10upx;
-			margin-top: 100upx;
-		}
-
-		.welcome {
-			position: relative;
-			left: 50upx;
-			top: -90upx;
-			font-size: 46upx;
-			color: #555;
-			text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.3);
-		}
-
-		.confirm-btn {
-			width: 630upx;
-			height: 76upx;
-			line-height: 76upx;
-			border-radius: 50px;
-			margin-top: 70upx;
-			background: green($color: #000000);
-			color: #fff;
-			font-size: 30upx;
-
-			&:after {
-				border-radius: 100px;
-			}
-		}
+		position: absolute;
+		top: 450upx;
+		left: 0;
+		width: 100%;
+	}
+	
+	.oauth-image {
+		position: relative;
+		width: 50px;
+		height: 50px;
+		border: 1px solid #dddddd;
+		border-radius: 50px;
+		margin: 0 20px;
+		background-color: #ffffff;
+	}
+	
+	.oauth-image image {
+		width: 30px;
+		height: 30px;
+		margin: 10px;
+	}
+	
+	.oauth-image button {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
 	}
 </style>
 ​
