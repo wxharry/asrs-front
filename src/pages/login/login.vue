@@ -16,14 +16,6 @@
 		<!-- <view class="action-row">
 			<navigator url="../reg/reg">如何注册</navigator>
 		</view> -->
-		<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
-			<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
-				<image :src="provider.image" @tap="toLogin(provider.value)"></image>
-				<!-- #ifdef MP-WEIXIN -->
-				<button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
-				<!-- #endif -->
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -143,59 +135,6 @@
 
 				this.loginBtnLoading = false
 			},
-			// loginBySms() {
-			// 	if (!/^1\d{10}$/.test(this.mobile)) {
-			// 		uni.showModal({
-			// 			content: '手机号码填写错误',
-			// 			showCancel: false
-			// 		})
-			// 		return
-			// 	}
-			// 	if (!/^\d{6}$/.test(this.code)) {
-			// 		uni.showModal({
-			// 			title: '验证码为6位纯数字',
-			// 			showCancel: false
-			// 		});
-			// 		return;
-			// 	}
-			// 	let _self = this;
-
-			// 	uniCloud.callFunction({
-			// 		name: 'user-center',
-			// 		data: {
-			// 			action: 'loginBySms',
-			// 			params: {
-			// 				mobile: this.mobile,
-			// 				code: this.code
-			// 			}
-			// 		},
-			// 		success: (e) => {
-
-			// 			console.log('login success', e);
-
-			// 			if (e.result.code == 0) {
-			// 				const username = e.result.username || '新用户'
-			// 				uni.setStorageSync('uni_id_token', e.result.token)
-			// 				uni.setStorageSync('username', username)
-			// 				uni.setStorageSync('login_type', 'online')
-			// 				_self.toMain(username);
-			// 			} else {
-			// 				uni.showModal({
-			// 					content: e.result.msg,
-			// 					showCancel: false
-			// 				})
-			// 				console.log('登录失败', e);
-			// 			}
-
-			// 		},
-			// 		fail(e) {
-			// 			uni.showModal({
-			// 				content: JSON.stringify(e),
-			// 				showCancel: false
-			// 			})
-			// 		}
-			// 	})
-			// },
 			bindLogin() {
 				switch (this.loginType) {
 					case 0:
@@ -378,40 +317,5 @@
 	.action-row navigator {
 		color: #007aff;
 		padding: 0 10px;
-	}
-
-	.oauth-row {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-	}
-
-	.oauth-image {
-		position: relative;
-		width: 50px;
-		height: 50px;
-		border: 1px solid #dddddd;
-		border-radius: 50px;
-		margin: 0 20px;
-		background-color: #ffffff;
-	}
-
-	.oauth-image image {
-		width: 30px;
-		height: 30px;
-		margin: 10px;
-	}
-
-	.oauth-image button {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		opacity: 0;
 	}
 </style>
