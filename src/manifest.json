@@ -43,7 +43,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wxf3fb5e2be5f04756",
         "setting" : {
             "urlCheck" : false
         },
@@ -62,16 +62,16 @@
         "router" : {
             "base" : ""
         },
-        "devServer": {
-            "port": 8000,
-            "disableHostCheck": true,
-            "proxy": {
-                "/api": {
-                    "target": "https://www.liaoluoxing.cn:444",
-                    "changeOrigin": true,
-                    "secure": false,
-                    "pathRewrite":{
-                        "^/api":""
+        "devServer" : {
+            "port" : 8000,
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/api" : {
+                    "target" : "https://www.liaoluoxing.cn:444",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/api" : ""
                     }
                 }
             }

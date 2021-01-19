@@ -45,7 +45,7 @@
       <view class="center-list" @click="showModal = !showModal">
         <view class="input-row">
           <text class="title">填报模板</text>
-      </view>
+        </view>
       </view>
       <view class="ul" v-if="showModal">
         <view v-for="(item, idx) in modelList" :key="item.id">
@@ -136,7 +136,7 @@
         </view>
       </view>
       <view class="btn-row">
-        <button type="primary" class="primary" @tap="submit">提交</button>
+        <button type="primary" class="primary" @tap="submit">提交模版</button>
       </view>
     </view>
   </view>
@@ -166,10 +166,12 @@ export default {
       address: "",
       temperature: "",
       date: "",
-      showModal:false
+      showModal: false,
     };
   },
   onLoad() {
+    console.log("Page 'main' has loaded.");
+
     this.getDateFormat();
     const loginType = uni.getStorageSync("login_type");
     if (loginType === "local") {
@@ -230,34 +232,6 @@ export default {
           }
         },
       });
-      // uniCloud.callFunction({
-      //   name: "user-center",
-      //   data: {
-      //     action: "checkToken",
-      //   },
-      //   success: (e) => {
-      //     console.log("checkToken success", e);
-
-      //   if (e.result.code > 0) {
-      //     //token过期或token不合法，重新登录
-      //     if (this.forcedLogin) {
-      //       uni.reLaunch({
-      //         url: "../login/login",
-      //       });
-      //     } else {
-      //       uni.navigateTo({
-      //         url: "../login/login",
-      //       });
-      //     }
-      //   }
-      // },
-      //   fail(e) {
-      //     uni.showModal({
-      //       content: JSON.stringify(e),
-      //       showCancel: false,
-      //     });
-      //   },
-      // });
     } else {
       this.guideToLogin();
     }

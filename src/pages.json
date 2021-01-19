@@ -1,51 +1,68 @@
 {
 	"pages": [
+		// #ifdef MP-WEIXIN
+		{
+			"path": "pages/wxAuth/wxAuth",
+			"style": {
+				"navigationBarTitleText": "授权"
+			}
+		},
+		// #endif
 		{
 			"path": "pages/main/main",
 			"style": {
 				"navigationBarTitleText": "自动填报脚本"
 			}
-		}, {
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
-		}, {
+		},
+		{
 			"path": "pages/reg/reg",
 			"style": {
 				"navigationBarTitleText": "注册"
 			}
-		},{
+		},
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
-		}, {
+		},
+		{
 			"path": "pages/info/info",
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
-		},{
+		},
+		{
 			"path": "pages/info/update-info",
 			"style": {
 				"navigationBarTitleText": "个人信息"
 			}
-		},{
+		},
+		{
 			"path": "pages/info/update-email",
 			"style": {
 				"navigationBarTitleText": "修改邮箱"
 			}
-		},{
+		},
+		{
 			"path": "pages/info/update-password",
 			"style": {
 				"navigationBarTitleText": "修改密码"
 			}
-		}, {
+		},
+		{
 			"path": "pages/invite/invite",
 			"style": {
 				"navigationBarTitleText": "邀请好友"
 			}
-		}, {
+		},
+		{
 			"path": "pages/about/about",
 			"style": {
 				"navigationBarTitleText": "关于应用"
@@ -56,17 +73,20 @@
 		"color": "#7a7e83",
 		"selectedColor": "#0faeff",
 		"backgroundColor": "#ffffff",
-		"list": [{
-			"pagePath": "pages/main/main",
-			"text": "首页",
-			"iconPath": "static/img/home.png",
-			"selectedIconPath": "static/img/homeHL.png"
-		}, {
-			"pagePath": "pages/user/user",
-			"text": "我的",
-			"iconPath": "static/img/user.png",
-			"selectedIconPath": "static/img/userHL.png"
-		}]
+		"list": [
+			{
+				"pagePath": "pages/main/main",
+				"text": "首页",
+				"iconPath": "static/img/home.png",
+				"selectedIconPath": "static/img/homeHL.png"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"text": "我的",
+				"iconPath": "static/img/user.png",
+				"selectedIconPath": "static/img/userHL.png"
+			}
+		]
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

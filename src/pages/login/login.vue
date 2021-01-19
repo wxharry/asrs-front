@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view class="btn-row">
-			<button type="primary" class="primary" :loading="loginBtnLoading" @tap="bindLogin">{{platform === 'h5'?'登陆':'绑定'}}</button>
+			<button type="primary" class="primary" :loading="loginBtnLoading" @tap="bindLogin">{{platform === 'h5'?'登录':'绑定'}}</button>
 		</view>
 		<!-- <view class="action-row">
 			<navigator url="../reg/reg">如何注册</navigator>
@@ -258,7 +258,7 @@
 				} else {
 					uni.showToast({
 						icon: 'none',
-						title: '登陆失败'
+						title: '登录失败'
 					});
 				}
 			},
@@ -311,7 +311,7 @@
 									fail() {
 										uni.showToast({
 											icon: 'none',
-											title: '登陆失败'
+											title: '登录失败'
 										});
 									}
 								});
