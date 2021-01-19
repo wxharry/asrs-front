@@ -1,6 +1,6 @@
 import baseURL from "@/common/config.js"
-
-const request = (options) => {
+import store from "@/store";
+export const request = (options) => {
     uni.request({
         method: options.method,
         url: baseURL + options.url,
@@ -13,21 +13,32 @@ const request = (options) => {
         complete: options.complete
     })
 }
-const requestErrorHandler = (code) => {
+export const requestErrorCode = (code, msg) => {
+    // console.log("in request.js");
     switch (code) {
+        case 0:
+            break;
         case -5:
-            if (this.forcedLogin) {
+            if (process.env.VUE_APP_PLATFORM === 'mp-weixin') {
+                launch_url = "../wxAuth/wxAuth"
+            } else {
+                launch_url = "../login/login"
+            }
+            if (store.forcedLogin) {
                 uni.reLaunch({
-                    url: "../login/login",
+                    url: launch_url,
                 });
             } else {
                 uni.navigateTo({
-                    url: "../login/login",
+                    url: launch_url,
                 });
             }
             break;
         default:
+            uni.showModal({
+                content: msg,
+                showCancel: false,
+              });
             break;
     }
 }
-export default request
