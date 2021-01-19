@@ -114,11 +114,7 @@ export default {
               title: "修改成功",
             });
           } else {
-            console.log(res);
-            uni.showModal({
-              content: res.msg,
-              showCancel: false,
-            });
+            this.$errorCode(res.code, res.msg)
           }
         },
         fail: (e) => {

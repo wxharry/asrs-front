@@ -27,27 +27,27 @@
 
       <view class="center-list">
         <view class="uni-list-cell uni-list-cell-pd">
-          <text class="title">当前地区</text>
+          <text class="uni-list-cell-db" style="color: #8f8f94">当前地区</text>
           <biaofunRegion
             @change="changeRegin"
             :defaultValue="region"
           ></biaofunRegion>
         </view>
-        <view class="input-row border">
-          <text class="title">具体地址</text>
+        <view class="uni-list-cell uni-list-cell-pd">
+          <text class="uni-list-cell-db" style="color: #8f8f94">具体地址</text>
           <m-input v-model="address" placeholder="具体地址"></m-input>
         </view>
-        <view class="input-row">
-          <text class="title">体温</text>
+        <view class="uni-list-cell uni-list-cell-pd">
+          <text class="uni-list-cell-db" style="color: #8f8f94">体温</text>
           <m-input v-model="temperature" placeholder="请输入体温"></m-input>
         </view>
       </view>
-      <view class="center-list" @click="showModal = !showModal">
-        <view class="input-row">
-          <text class="title">填报模板</text>
+      <view class="center-list" @click="showModel = !showModel">
+        <view class="uni-list-cell uni-list-cell-pd">
+          <text class="title">{{showModel?"折叠":"展开"}}填报模板</text>
         </view>
       </view>
-      <view class="ul" v-if="showModal">
+      <view class="ul" v-if="showModel">
         <view v-for="(item, idx) in modelList" :key="item.id">
           <!-- {{ idx }}{{ item.type }} -->
           <view :id="item.id" :name="item.name" :hidden="item.hidden">
@@ -166,7 +166,7 @@ export default {
       address: "",
       temperature: "",
       date: "",
-      showModal: false,
+      showModel: false,
     };
   },
   onLoad() {
@@ -193,17 +193,8 @@ export default {
             this.region.push(res.shi);
             this.region.push(res.xian);
             this.address = res.address;
-          } else if (res.code === -5) {
-            //token过期或token不合法，重新登录
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
+          } else {
+            this.$errorCode(res.code, res.msg);
           }
         },
       });
@@ -218,17 +209,8 @@ export default {
             this.auto = res.is_auto_flag;
             this.defaultModel = res.default_model_flag;
             this.modelList = this.convertModel(res.model);
-          } else if (res.code === -5) {
-            //token过期或token不合法，重新登录
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
+          } else {
+            this.$errorCode(res.code, res.msg)
           }
         },
       });
@@ -357,23 +339,8 @@ export default {
               icon: "none",
               title: "提交成功",
             });
-          } else if (res.code === -5) {
-            //token过期或token不合法，重新登录
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
-          } else {
-            // console.log(res);
-            uni.showModal({
-              content: res.msg,
-              showCancel: false,
-            });
+          }else {
+            this.$errorCode(res.code, res.msg)
           }
         },
       });
@@ -429,17 +396,7 @@ export default {
         },
         success: (e) => {
           console.log("success", e);
-          if (e.data.code === -5) {
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
-          }
+          this.$errorCode(e.data.code, res.msg)
         },
       });
     },
@@ -454,17 +411,7 @@ export default {
         },
         success: (e) => {
           console.log("success", e);
-          if (e.data.code === -5) {
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: "../login/login",
-              });
-            } else {
-              uni.navigateTo({
-                url: "../login/login",
-              });
-            }
-          }
+          this.$errorCode(e.data.code, res.msg)
         },
       });
     },

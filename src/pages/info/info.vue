@@ -2,14 +2,17 @@
   <view>
     <view class="center">
       <view class="center-list">
-        <view class="center-list-item border-bottom" @tap="gotoUpdate('password')">
+        <view
+          class="center-list-item border-bottom"
+          @tap="gotoUpdate('password')"
+        >
           <text class="list-icon">学号</text>
-          <text class="list-text">{{username}}</text>
+          <text class="list-text">{{ username }}</text>
           <text class="navigat-arrow">&#xe65e;</text>
-        </view>        
+        </view>
         <view class="center-list-item" @tap="gotoUpdate('email')">
           <text class="list-icon">邮箱</text>
-          <text class="list-text">{{email}}</text>
+          <text class="list-text">{{ email }}</text>
           <text class="navigat-arrow">&#xe65e;</text>
         </view>
       </view>
@@ -43,10 +46,7 @@ export default {
           this.username = res.username;
           this.email = res.email;
         } else {
-          uni.showModal({
-            content: res.msg,
-            showCancel: false,
-          });
+          this.$errorCode(res.code, res.msg);
         }
       },
       fail: (e) => {},
@@ -60,7 +60,7 @@ export default {
     gotoUpdate(page) {
       // console.log(page);
       uni.navigateTo({
-        url: "/pages/info/update-"+page,
+        url: "/pages/info/update-" + page,
       });
     },
   },

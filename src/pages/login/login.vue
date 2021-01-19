@@ -130,23 +130,7 @@
 							uni.setStorageSync('uni_id_has_pwd', true)
 							_self.toMain(_self.username);
 						} else {
-							let c = ""
-							switch (res.code) {
-								case -1:
-									c = "输入密码错误"
-									break;
-								case -2:
-									c = "输入账号错误"
-									break;
-								default:
-									c = "未知错误"
-									break;
-							}
-							uni.showModal({
-								content: c,
-								showCancel: false
-							})
-							console.log('登录失败', e);
+ 				           this.$errorCode(res.code, res.msg)
 						}
 					},
 					fail:(e)=>{

@@ -132,6 +132,7 @@ export default {
             });
             console.log("登出失败", e);
           }
+ 				  this.$errorCode(res.code, res.msg)
         },
         fail: (e) => {
           uni.showModal({

@@ -135,10 +135,7 @@ export default {
               title: "注册成功",
             });
           } else {
-            uni.showModal({
-              content: res.msg,
-              showCancel: false,
-            });
+ 				     this.$errorCode(res.code, res.msg)
           }
         },
         fail(e) {
