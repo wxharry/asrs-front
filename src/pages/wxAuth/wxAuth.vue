@@ -1,126 +1,150 @@
 <template>
-	<view class="container">
-		<view class="oauth-row">
-			<view class="oauth-image">
-				<image src="../../static/img/weixin.png"></image>
-				<button open-type="getUserInfo" @getuserinfo="wxLogin"></button>
-			</view>
-		</view>		
-	</view>
+  <view class="container">
+    <view class="oauth-row">
+      <view class="oauth-image">
+        <image src="../../static/img/weixin.png"></image>
+        <button open-type="getUserInfo" @getuserinfo="wxLogin"></button>
+      </view>
+    </view>
+  </view>
 </template>
 ​
 <script>
-	// import { mapMutation } from 'vuex';​
-	export default {
-		data() {
-			return {
-				logining: false
-			};
-		},
-		onLoad() {
-			// #ifdef MP-WEIXIN
-			// 判断微信小程序是否已经授权
-			uni.getSetting({
-				success(res) {
-					console.log('授权: ', res)
-					if (!res.authSetting['scope.userInfo']) {
-						console.log('未授权, 停留在此页进行授权操作。')
-					} else {
-						console.log('已授权，刷新session信息保持登录状态。')
-						// 还没写
-						uni.reLaunch({
-							url: '../main/main'
-						})
-					}
-				}
-			})
-			// #endif
-		},
-		methods: {
-			wxLogin(e) {
-				const that = this;
-				that.logining = true;
-				let userInfo = e.detail.userInfo;
-				uni.login({
-					provider: "weixin",
-					success: (login_res => {
-						let code = login_res.code;
-						console.log("code: ", code)
-						uni.getUserInfo({
-							success(info_res) {
-								console.log(info_res)
-								uni.request({
-									url: 'https://www.liaoluoxing.cn:444/wxlogin/',
-									method: "GET",
-									// header: {
-									// 	'content-type': 'application/x-www-form-urlencoded'
-									// },
-									data: {
-										code: code,
-										rawData: info_res.rawData
-									},
-									success(res) {
-										// 如果授权成功，跳转到主页，在那里进行账号绑定（和session注入）
-										console.log('200: ', res.data)
-										uni.setStorageSync('uni_id_token', res.data.sessionId)
-										// 温馨提示：uni.navigateTo只能用于非tabbar页面的跳转
-										uni.reLaunch({
-											url: '../main/main'
-										})
-										
-										
-										
-									},
-									fail(error) {
-										console.log(error)
-									}
-								})
-								uni.hideLoading()
-								// uni.navigateBack()
-							}
-						})
-
-					})
-				})
-			}
-		}
-	};
+// import { mapMutation } from 'vuex';​
+export default {
+  data() {
+    return {
+      logining: false,
+    };
+  },
+  onLoad() {
+    // #ifdef MP-WEIXIN
+    // 判断微信小程序是否已经授权
+    uni.getSetting({
+      success(res) {
+        console.log("是否授权？ ", res);
+        if (!res.authSetting["scope.userInfo"]) {
+          console.log("未授权, 停留在此页进行授权操作。");
+        } else {
+          console.log("已授权，刷新session信息保持登录状态。");
+          // 还没写
+          uni.login({
+            provider: "weixin",
+            success: (login_res) => {
+              let code = login_res.code;
+              console.log("code: ", code);
+              uni.getUserInfo({
+                success(info_res) {
+                  console.log(info_res);
+                  uni.request({
+                    url: "https://www.liaoluoxing.cn:444/wxlogin/",
+                    method: "GET",
+                    data: {
+                      code: code,
+                      rawData: info_res.rawData,
+                    },
+                    success(res) {
+                      console.log("GET刷新session", res.data);
+                      uni.setStorageSync("uni_id_token", res.data.sessionId);
+                      uni.setStorageSync("publicKey", res.data.rsa_public_key);
+                      // 温馨提示：uni.navigateTo只能用于非tabbar页面的跳转
+                      uni.reLaunch({
+                        url: "../main/main",
+                      });
+                    },
+                    fail(error) {
+                      console.log(error);
+                    },
+                  });
+                },
+              });
+            },
+          });
+        }
+      },
+    });
+    // #endif
+  },
+  methods: {
+    wxLogin(e) {
+      const that = this;
+      that.logining = true;
+      let userInfo = e.detail.userInfo;
+      uni.login({
+        provider: "weixin",
+        success: (login_res) => {
+          let code = login_res.code;
+          console.log("code: ", code);
+          uni.getUserInfo({
+            success(info_res) {
+              console.log(info_res);
+              uni.request({
+                url: "https://www.liaoluoxing.cn:444/wxlogin/",
+                method: "GET",
+                // header: {
+                // 	'content-type': 'application/x-www-form-urlencoded'
+                // },
+                data: {
+                  code: code,
+                  rawData: info_res.rawData,
+                },
+                success(res) {
+                  console.log("200: ", res.data);
+                  uni.setStorageSync("uni_id_token", res.data.sessionId);
+                  uni.setStorageSync("publicKey", res.data.rsa_public_key);
+                  uni.navigateTo({
+                    url: "../login/login",
+                  });
+                },
+                fail(error) {
+                  console.log(error);
+                },
+              });
+              uni.hideLoading();
+              // uni.navigateBack()
+            },
+          });
+        },
+      });
+    },
+  },
+};
 </script>
 ​
 <style lang="scss">
-	.oauth-row {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		position: absolute;
-		top: 450upx;
-		left: 0;
-		width: 100%;
-	}
-	
-	.oauth-image {
-		position: relative;
-		width: 50px;
-		height: 50px;
-		border: 1px solid #dddddd;
-		border-radius: 50px;
-		margin: 0 20px;
-		background-color: #ffffff;
-	}
-	
-	.oauth-image image {
-		width: 30px;
-		height: 30px;
-		margin: 10px;
-	}
-	
-	.oauth-image button {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		opacity: 0;
-	}
+.oauth-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  top: 450upx;
+  left: 0;
+  width: 100%;
+}
+
+.oauth-image {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #dddddd;
+  border-radius: 50px;
+  margin: 0 20px;
+  background-color: #ffffff;
+}
+
+.oauth-image image {
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+
+.oauth-image button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
 </style>
 ​

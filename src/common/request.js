@@ -1,6 +1,7 @@
 import baseURL from "@/common/config.js"
 import store from "@/store";
 export const request = (options) => {
+    // console.log("request时的sessionId：", uni.getStorageSync('uni_id_token'));
     uni.request({
         method: options.method,
         url: baseURL + options.url,
@@ -19,6 +20,7 @@ export const requestErrorCode = (code, msg) => {
         case 0:
             break;
         case -5:
+            var launch_url
             if (process.env.VUE_APP_PLATFORM === 'mp-weixin') {
                 launch_url = "../wxAuth/wxAuth"
             } else {
