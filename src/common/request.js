@@ -16,6 +16,7 @@ export const request = (options) => {
 }
 export const requestErrorCode = (code, msg) => {
     // console.log("in request.js");
+    var launch_url
     switch (code) {
         case 0:
             break;

@@ -1,5 +1,12 @@
 <template>
-  <view class="container">
+  <view class="content">
+    <view class="center">
+      <view class="avatar">
+        <image src="../../static/img/avatar.jpeg"></image>
+      </view>
+      <view class="title">欢迎使用<br />SHU自动填报系统</view>
+      <view class="text">点击图标授权登录</view>
+    </view>
     <view class="oauth-row">
       <view class="oauth-image">
         <image src="../../static/img/weixin.png"></image>
@@ -116,8 +123,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  position: absolute;
-  top: 450upx;
+  margin-top: 30px;
   left: 0;
   width: 100%;
 }
@@ -145,6 +151,29 @@ export default {
   width: 100%;
   height: 100%;
   opacity: 0;
+}
+.title {
+  color: #38383a;
+  margin-top: 40px;
+  font-size: 25px;
+  text-align: center;
+}
+.text {
+  text-align: center;
+  color: #5f5f5f;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.avatar {
+  margin-top: 70px;
+  widows: 100%;
+  text-align: center;
+}
+.avatar image {
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
 }
 </style>
 ​
