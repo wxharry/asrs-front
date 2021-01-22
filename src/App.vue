@@ -31,19 +31,19 @@
 			});
 			// #endif
 
-
-			// 临时获取publicKey
+			// #ifdef H5
+			// h5获取publicKey
 			this.$request({
-				url: "/test2/",
+				url: "/wxlogin/",
 				method: "GET",
 				success: (e) => {
-					console.log(e.data);
-					uni.setStorageSync("publicKey", e.data.msg);
+					uni.setStorageSync("publicKey", e.data.rsa_public_key);
 				},
 				fail: (e) => {
-					console.log(e);
+					console.log('FAIL: ', e);
 				},
 			});
+			// #endif
 		},
 
 		onShow: function() {

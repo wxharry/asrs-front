@@ -187,6 +187,7 @@ export default {
         success: (e) => {
           // console.log("success info", e);
           var res = e.data;
+          console.log('/getUserInfo/: ', res)
           if (res.code === 0) {
             // console.log(res);
             this.region.push(res.sheng);
