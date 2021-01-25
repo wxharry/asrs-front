@@ -37,14 +37,14 @@
           <text class="uni-list-cell-db" style="color: #8f8f94">具体地址</text>
           <m-input v-model="address" placeholder="具体地址"></m-input>
         </view>
-        <view class="uni-list-cell uni-list-cell-pd">
+        <!-- <view class="uni-list-cell uni-list-cell-pd">
           <text class="uni-list-cell-db" style="color: #8f8f94">体温</text>
           <m-input v-model="temperature" placeholder="请输入体温"></m-input>
-        </view>
+        </view> -->
       </view>
       <view class="center-list" @click="showModel = !showModel">
         <view class="uni-list-cell uni-list-cell-pd">
-          <text class="title">{{showModel?"折叠":"展开"}}填报模板</text>
+          <text class="title">{{ showModel ? "折叠" : "展开" }}填报模板</text>
         </view>
       </view>
       <view class="ul" v-if="showModel">
@@ -80,7 +80,7 @@
                       :value="option.value"
                       :checked="item.val === option.value"
                     />
-                    {{ item.prop.options[i].value }}
+                    {{ item.prop.options[i].text }}
                   </label>
                 </label>
               </radio-group>
@@ -123,7 +123,12 @@
                 <textarea @blur="change($event, idx)" auto-height />
               </view>
             </view>
-
+            <view v-if="item.type === 'textbox'">
+              <label>{{ item.title }}</label>
+              <view class="uni-textarea">
+                <textarea @blur="change($event, idx)" auto-height />
+              </view>
+            </view>
             <view v-if="item.id === 'p1_GeLDZ'">
               <label>{{ item.title }}</label>
               <input
@@ -187,7 +192,7 @@ export default {
         success: (e) => {
           // console.log("success info", e);
           var res = e.data;
-          console.log('/getUserInfo/: ', res)
+          console.log("/getUserInfo/: ", res);
           if (res.code === 0) {
             // console.log(res);
             this.region.push(res.sheng);
@@ -211,7 +216,7 @@ export default {
             this.defaultModel = res.default_model_flag;
             this.modelList = this.convertModel(res.model);
           } else {
-            this.$errorCode(res.code, res.msg)
+            this.$errorCode(res.code, res.msg);
           }
         },
       });
@@ -254,8 +259,7 @@ export default {
           for (let j = 0; j < this.modelList.length; j++) {
             const element = this.modelList[j];
             if (element["id"] === child_id) {
-              element["hidden"] =
-                element["hidden"] === undefined ? "true" : undefined;
+              element["hidden"] = this.modelList[idx]['hiddenValue'] != e.detail.value ? undefined : "true";
             }
           }
         }
@@ -270,17 +274,19 @@ export default {
       }
       return undefined;
     },
-    submit() {
-      var model = [];
+
+    // 检查模板填写情况
+    checkValid() {
       // 判断地区不为空
       if (this.region === []) {
         uni.showModal({
           content: "所在地不能为空！",
           showCancel: false,
         });
-        return;
+        return false;
       }
-      // 暂不判断
+
+      // 检查体温是否正常
       // if (!this.isValidTemp(this.temperature)) {
       //   uni.showModal({
       //     content: "体温填写异常！",
@@ -288,21 +294,62 @@ export default {
       //   });
       //   return;
       // }
-      console.log(this.modelList);
+
       for (let i = 0; i < this.modelList.length; i++) {
         const element = this.modelList[i];
+        // 不支持国外信息填报
+        if (element.id === "p1_DangQSTZK" && element.val === "不适") {
+          uni.showModal({
+            content: "特殊时期，如身体不适请及时到学校系统填报",
+            showCancel: false,
+          });
+          return false;
+        }
+        // 不支持国外信息填报
+        if (element.id === "p1_GuoNei" && element.val === "国外") {
+          uni.showModal({
+            content: "暂不支持国外填报",
+            showCancel: false,
+          });
+          return false;
+        }
+        // 显示的文本框不为空
+        // 新增的国内国外城市除外
         if (
+          element.id != "p1_DaoXQLYGJ" &&
+          element.id != "p1_DaoXQLYCS" &&
           element.hidden === undefined &&
           element.val === "" &&
           element.title != undefined &&
           (element.type === "textbox" || element.type === "textarea")
         ) {
-          // console.log(i);
           uni.showModal({
             content: element.title + "未填写",
             showCancel: false,
           });
-          return;
+          return false;
+        }
+      }
+
+      return true;
+    },
+    submit() {
+      if (!this.checkValid()) {
+        return;
+      }
+      var model = [];
+      // console.log(this.modelList);
+      for (let i = 0; i < this.modelList.length; i++) {
+        const element = this.modelList[i];
+        // if (element.type === 'button' ||
+        //     element.type === 'panel' ||
+        //     element.type === 'label'
+        // ) {
+        //   continue;
+        // }
+        // 隐藏
+        if (element.hidden === 'true') {
+          continue;
         }
         model.push({
           id: element.id,
@@ -312,7 +359,7 @@ export default {
           hidden: element.hidden,
         });
       }
-      // console.log("model", model);
+      console.log("model", model);
       const data = {
         model: JSON.stringify(model),
         location: {
@@ -397,7 +444,7 @@ export default {
         },
         success: (e) => {
           console.log("success", e);
-          this.$errorCode(e.data.code, res.msg)
+          this.$errorCode(e.data.code, res.msg);
         },
       });
     },
@@ -412,7 +459,7 @@ export default {
         },
         success: (e) => {
           console.log("success", e);
-          this.$errorCode(e.data.code, res.msg)
+          this.$errorCode(e.data.code, res.msg);
         },
       });
     },
@@ -448,13 +495,14 @@ export default {
         case "radiobuttonlist":
           ret["title"] = content.fieldLabel;
           ret["val"] = content.SelectedValue;
+          ret["hiddenValue"] = content.hiddenValue;
           ret["prop"] = {
             options: [],
           };
           for (let i = 0; i < content.F_Items.length; i++) {
             ret["prop"]["options"].push({
               value: content.F_Items[i][0],
-              text: content.F_Items[i][0],
+              text: content.F_Items[i][1],
             });
           }
           break;
@@ -477,6 +525,7 @@ export default {
           break;
         case "textbox":
           if (ret["id"] === "p1_XiangXDZ") {
+            ret["hidden"] = "true";
             break;
           }
           ret["title"] = content.fieldLabel;
@@ -490,7 +539,6 @@ export default {
             break;
           }
           ret["title"] = content.fieldLabel;
-          ret["newType"] = "uniDataCheckbox";
           ret["val"] = content.SelectedValueArray[0];
           ret["prop"] = {
             multiple: false,
