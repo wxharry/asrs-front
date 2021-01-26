@@ -446,7 +446,7 @@ export default {
         },
         success: (e) => {
           console.log("success", e);
-          this.$errorCode(e.data.code, res.msg);
+          this.$errorCode(e.data.code, e.data.msg);
         },
       });
     },
@@ -461,7 +461,7 @@ export default {
         },
         success: (e) => {
           console.log("success", e);
-          this.$errorCode(e.data.code, res.msg);
+          this.$errorCode(e.data.code, e.data.msg);
         },
       });
     },
