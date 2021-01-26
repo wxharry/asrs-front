@@ -249,8 +249,10 @@ export default {
       return dateStr;
     },
     change(e, idx) {
-      // console.log(e.detail.value);
       this.modelList[idx]["val"] = e.detail.value;
+      // 实在判断空列表的区别，用stringify函数暂时解决
+      var hVal = JSON.stringify(this.modelList[idx]["hiddenValue"])
+      var val = JSON.stringify(e.detail.value)
       var children = this.modelList[idx]["child"];
       if (children != undefined) {
         // console.log(children);
@@ -259,7 +261,7 @@ export default {
           for (let j = 0; j < this.modelList.length; j++) {
             const element = this.modelList[j];
             if (element["id"] === child_id) {
-              element["hidden"] = this.modelList[idx]['hiddenValue'] != e.detail.value ? undefined : "true";
+              element["hidden"] = hVal != val ? undefined : "true";
             }
           }
         }
@@ -348,7 +350,7 @@ export default {
         //   continue;
         // }
         // 隐藏
-        if (element.hidden === 'true') {
+        if (element.hidden === "true") {
           continue;
         }
         model.push({
@@ -484,6 +486,7 @@ export default {
           break;
         case "checkbox":
           ret["val"] = content.checked === "true" ? ["true"] : [];
+          ret["hiddenValue"] = content.hiddenValue === "true" ? ["true"] : [];
           ret["prop"] = {
             checked: content.checked === "true",
             text:
