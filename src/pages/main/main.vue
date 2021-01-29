@@ -349,17 +349,21 @@ export default {
         // ) {
         //   continue;
         // }
-        // 隐藏
-        if (element.hidden === "true") {
-          continue;
-        }
-        model.push({
+        let e = {
           id: element.id,
           name: element.name,
           type: element.type,
           val: element.val,
           hidden: element.hidden,
-        });
+        }
+        if (e.id === "p1_XiangXDZ") {
+          e.hidden = undefined;
+        }
+        // 隐藏的元素不上传
+        if (e.hidden === "true") {
+          continue;
+        }
+        model.push(e);
       }
       console.log("model", model);
       const data = {
@@ -371,7 +375,7 @@ export default {
           address: this.address,
         },
       };
-      console.log("submit", data);
+      // console.log("submit", data);
       this.$request({
         url: "/setPersonalModel/",
         methods: "GET",
