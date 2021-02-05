@@ -141,9 +141,27 @@
         </view>
       </view>
       <view class="btn-row">
-        <button type="primary" class="primary" @tap="submit">提交模版</button>
+        <button
+          type="primary"
+          class="primary"
+          :loading="confirmBtnLoading"
+          :disabled="confirmBtnLoading"
+          @tap="openDialog"
+        >
+          提交模版
+        </button>
       </view>
     </view>
+    <uni-popup ref="popup" type="dialog">
+      <uni-popup-dialog
+        type="input"
+        title="确认"
+        content="是否确认修改模板?"
+        :before-close="true"
+        @close="close"
+        @confirm="confirm"
+      ></uni-popup-dialog>
+    </uni-popup>
   </view>
 </template>
 
@@ -151,6 +169,7 @@
 import { mapState, mapMutations } from "vuex";
 import { univerifyLogin } from "@/common/univerify.js";
 import MInput from "../../components/m-input.vue";
+import { uniPopupDialog } from "@dcloudio/uni-ui";
 import biaofunDatetimePicker from "@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue";
 import biaofunRegion from "@/components/biaofun-region/biaofun-region.vue";
 
@@ -160,6 +179,7 @@ export default {
     MInput,
     biaofunDatetimePicker,
     biaofunRegion,
+    uniPopupDialog
   },
   data() {
     return {
@@ -172,6 +192,7 @@ export default {
       temperature: "",
       date: "",
       showModel: false,
+      confirmBtnLoading: false,
     };
   },
   onLoad() {
@@ -226,6 +247,25 @@ export default {
   },
   methods: {
     ...mapMutations(["login"]),
+    openDialog() {
+      // 检查输入是否合法
+      let isvalid = this.checkValid;
+      if (!isvalid) {
+        return;
+      }
+      // 打开弹出框
+      this.$refs.popup.open();
+    },
+    confirm() {
+      this.$refs.popup.close();
+      this.confirmBtnLoading = true;
+      this.submit();
+    },
+    close(done) {
+      // 关闭弹出框
+      this.$refs.popup.close();
+      this.confirmBtnLoading = false;
+    },
     isValidTemp(val) {
       if (parseFloat(val).toString() == "NaN") {
         console.log(parseFloat(val).toString());
@@ -251,8 +291,8 @@ export default {
     change(e, idx) {
       this.modelList[idx]["val"] = e.detail.value;
       // 实在判断空列表的区别，用stringify函数暂时解决
-      var hVal = JSON.stringify(this.modelList[idx]["hiddenValue"])
-      var val = JSON.stringify(e.detail.value)
+      var hVal = JSON.stringify(this.modelList[idx]["hiddenValue"]);
+      var val = JSON.stringify(e.detail.value);
       var children = this.modelList[idx]["child"];
       if (children != undefined) {
         // console.log(children);
@@ -355,7 +395,7 @@ export default {
           type: element.type,
           val: element.val,
           hidden: element.hidden,
-        }
+        };
         if (e.id === "p1_XiangXDZ") {
           e.hidden = undefined;
         }
@@ -376,6 +416,7 @@ export default {
         },
       };
       // console.log("submit", data);
+      let _self = this
       this.$request({
         url: "/setPersonalModel/",
         methods: "GET",
@@ -393,9 +434,19 @@ export default {
               icon: "none",
               title: "提交成功",
             });
-          }else {
-            this.$errorCode(res.code, res.msg)
+          } else {
+            this.$errorCode(res.code, res.msg);
           }
+        },
+        fail(e) {
+          uni.showModal({
+            content: e.data.msg,
+            showCancel: false,
+          });
+        },
+        complete(e) {
+          console.log("complete", _self.confirmBtnLoading);
+          _self.confirmBtnLoading = false;
         },
       });
     },
