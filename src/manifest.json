@@ -60,7 +60,7 @@
     },
     "h5" : {
         "router" : {
-            "base" : ""
+            "base" : "./"
         },
         "devServer" : {
             "port" : 8000,
