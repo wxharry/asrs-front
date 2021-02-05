@@ -248,11 +248,6 @@ export default {
   methods: {
     ...mapMutations(["login"]),
     openDialog() {
-      // 检查输入是否合法
-      let isvalid = this.checkValid;
-      if (!isvalid) {
-        return;
-      }
       // 打开弹出框
       this.$refs.popup.open();
     },
@@ -377,6 +372,7 @@ export default {
     },
     submit() {
       if (!this.checkValid()) {
+        this.confirmBtnLoading = false;
         return;
       }
       var model = [];
