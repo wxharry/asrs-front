@@ -35,6 +35,7 @@
         type="primary"
         class="primary"
         :loading="confirmBtnLoading"
+        :disabled="confirmBtnLoading"
         @tap="open"
       >
         邀请

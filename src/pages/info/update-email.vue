@@ -13,7 +13,7 @@
       </view>
     </view>
     <view class="btn-row">
-      <button type="primary" class="primary" :loading="BtnLoading" @tap="open">
+      <button type="primary" class="primary" :disabled="BtnLoading" :loading="BtnLoading" @tap="open">
         修改信息
       </button>
     </view>

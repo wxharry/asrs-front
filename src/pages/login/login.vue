@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view class="btn-row">
-			<button type="primary" class="primary" :loading="loginBtnLoading" @tap="bindLogin">{{platform === 'h5'?'登录':'绑定'}}</button>
+			<button type="primary" class="primary" :disabled="BtnLoading" :loading="loginBtnLoading" @tap="bindLogin">{{platform === 'h5'?'登录':'绑定'}}</button>
 		</view>
 		<!-- <view class="action-row">
 			<navigator url="../reg/reg">如何注册</navigator>
