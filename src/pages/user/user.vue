@@ -50,7 +50,7 @@
           v-if="hasLogin"
           class="primary"
           type="primary"
-          :disabled="BtnLoading"
+          :disabled="logoutBtnLoading"
           :loading="logoutBtnLoading"
           @tap="bindLogout"
         >
