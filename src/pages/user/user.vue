@@ -9,7 +9,7 @@
         <image class="logo-img" :src="avatarUrl"></image>
         <view class="logo-title">
           <text class="uer-name"
-            >Hi，{{ hasLogin ? userName : "您未登录" }}</text
+            >Hi，{{ hasLogin ? nickName||userName : "您未登录" }}</text
           >
           <text class="go-login navigat-arrow" v-if="!hasLogin">&#xe65e;</text>
         </view>
@@ -68,6 +68,7 @@ export default {
   data() {
     return {
       avatarUrl: "../../static/img/logo.png",
+      nickName: uni.getStorageSync("nickName"),
       inviteUrl: "",
       logoutBtnLoading: false,
       hasPwd: uni.getStorageSync("uni_id_has_pwd"),
@@ -80,6 +81,7 @@ export default {
   },
   onLoad() {
     this.platform = process.env.VUE_APP_PLATFORM;
+    this.avatarUrl = uni.getStorageSync("avatarUrl") || this.avatarUrl;
   },
   methods: {
     ...mapMutations(["logout"]),

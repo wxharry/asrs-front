@@ -43,6 +43,8 @@ export default {
               uni.getUserInfo({
                 success(info_res) {
                   console.log(info_res);
+                  uni.setStorageSync("avatarUrl", info_res.userInfo.avatarUrl);
+                  uni.setStorageSync("nickName", info_res.userInfo.nickName);
                   uni.request({
                     url: "https://www.liaoluoxing.cn:444/wxlogin/",
                     method: "GET",
